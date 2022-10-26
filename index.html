@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style/style.css">
+    <title data-trans="title">Meme Generator</title>
+    <link rel="icon" type="image/x-icon" href="./images/favicon-32x32.png">
+</head>
+
+<body onload="onInit()">
+    <section class="main-layout grid">
+        <header class="full flex space-between">
+            <p class="logo">Memgen</p>
+            <button onclick="openGallery()">gallery</button>
+            <button onclick="openEditor()">editor</button>
+            <p>☰</p>
+        </header>
+        <section class="img-gallery">
+            <input oninput="onTitleSearch()" type="text">
+            <section class="titles-links flex space-between"><a href="#">funny</a><a href="#">cool</a><a href="#">pets</a>
+            </section>
+            <section class="gellery-container grid grid-center">
+                <img src="./images/meme-imgs/1.jpg" alt="1" onclick="editImg(1)">
+
+                <img src="./images/meme-imgs/2.jpg" onclick="editImg(2)"  alt="2">
+                <img src="./images/meme-imgs/3.jpg" onclick="editImg(3)" alt="3">
+                <img src="./images/meme-imgs/4.jpg" onclick="editImg(4)" alt="4">
+            </section>
+            <section class="contact-me grid grid-center">
+                <img src="" alt="my round img">
+                <h2>my name</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                    Dolorem doloremque corrupti, asperiores id earum voluptate?
+                </p>
+                <section class="social-links flex space-between">
+                    <p>logsvg</p>
+                    <p>logosvg</p>
+                    <p>logosvg</p>
+                </section>
+            </section>
+        </section>
+
+        <section class="meme-editor grid drid-center hide">
+            <section class="canvas-container  grid grid-center">
+
+                <canvas width="400px" height="400px"></canvas>
+                
+                <section class="control-box grid grid-center">
+                    <button>↓↑</button>
+                    <button>+</button>
+                    <button>🗑</button>
+                    <form onsubmit="onSubmit(event)">
+                        <fieldset>
+                            <lable>background color
+                                <input type="color" name="background-color" value="#ffffff" oninput="onBgColorChange(this.value)">
+                            </lable>
+                            <lable>stroke color
+                                <input type="color" name="stroke-color" oninput="onColorChange()">
+                            </lable>
+                            <lable> fill color
+                                <input type="color" name="fill-color" value="#000000" oninput="onColorChange()">
+                            </lable>
+                
+                            <lable for="pen-shape"> choose shape
+                                <select oninput="onShapeChange(this.value)" id="pen-shape" pattern="Line|Circle|Rectengle|Triangle">
+                                    <option value="line">Line</option>
+                                    <option value="circle">Circle</option>
+                                    <option value="rectengle">Rectengle</option>
+                                    <option value="triangle">Triangle</option>
+                                </select>
+                                <lable>Diameter<input type="number" name="width" value="40" min="0" max="250" placeholder="thickness"
+                                        oninput="onDiameterChange(this.value)">
+                                </lable>
+                                <lable>Thickness<input type="number" name="thickness" value="1" min="0" max="150"
+                                        placeholder="thickness" oninput="onThicknessChange(this.value)">
+                                </lable>
+                
+                                <input type="text" name="text" placeholder="write text" oninput="onTextInput(event,this.value)">
+                
+                                <button onclick="clearCanvas(event)">Clear</button>
+                
+                                <a href="#" class="btn" onclick="downloadImg(this)" download="my-img.jpg">Download as jpeg</a>
+                                <input type="file" class="file-input btn" name="image" onchange="onImgInput(event)"/>
+                                <button class="btn" onclick="uploadImg(event)">Upload Image from Canvas</button>
+                        </fieldset>
+                    </form>
+
+                    <button class="share-btn">share</button>
+                </section>
+
+            </section>
+        </section>
+
+        <section class="saved-gallery"></section>
+
+        <footer class="grid grid-center">
+            <p class="logo">Memegen</p>
+            <p>all rights em emmo</p>
+        </footer>
+
+    </section>
+
+
+    <script src="./js/services/storage-service.js"></script>
+    <script src="./js/services/canvas-service.js"></script>
+    <script src="./js/services/meme-service.js"></script>
+    <script src="./js/controllers/app-controller.js"></script>
+    <script src="./js/controllers/meme-controller.js"></script>
+    <script src="./js/controllers/canvas-controller.js"></script>
+</body>
+
+</html>

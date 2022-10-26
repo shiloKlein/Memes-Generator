@@ -1,0 +1,64 @@
+/* BASICS */
+
+* {
+    box-sizing: border-box
+}
+
+body {
+    background-color: antiquewhite;
+}
+
+img {
+    width: 250px;
+}
+
+
+
+
+
+
+canvas {
+    background-color: rgb(255, 255, 255);
+}
+
+/* HELPERS */
+.grid {
+    display: grid;
+
+}
+.grid-center{
+    place-items: center;
+}
+
+.img-gellery {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    gap:15px;
+}
+
+.flex {
+    display: flex;
+}
+
+.space-between {
+    justify-content: space-between;
+}
+
+.hide {
+    display: none
+}
+
+/* LAYOUT */
+
+.grid-container {
+
+}
+.control-box{
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+    gap:15px
+}
+.canvas-container{
+    width: 500px;
+    /* width: 100%; */
+}
