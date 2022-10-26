@@ -1,15 +1,43 @@
+:root {
+    /* pallet */
+    --clr1: #ff7f00;
+
+
+
+    /* --clr-3: #292929;
+    --clr-2:#4f4e4e;
+    --clr-1: #606060;
+    --clr1: #818181;
+    --clr2: #a6a6a6;
+    --clr3:#c2c1c1;
+    --clr4: #e1e0e0;
+    --clr5: #f8f8f8;
+    --clr6: #58c93a; */
+
+}
+
 /* BASICS */
+
 
 * {
     box-sizing: border-box
 }
 
 body {
-    background-color: antiquewhite;
+    background-color: lightgray;
 }
 
 img {
     width: 250px;
+}
+
+/* a {
+    text-decoration: none;
+    color: inherit;
+} */
+header {
+    background-color: var(--clr1);
+    width: 100%
 }
 
 
@@ -26,18 +54,23 @@ canvas {
     display: grid;
 
 }
-.grid-center{
+
+.grid-center {
     place-items: center;
 }
 
 .img-gellery {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr;
-    gap:15px;
+    gap: 15px;
 }
 
 .flex {
     display: flex;
+}
+
+.flex-column {
+    flex-direction: column;
 }
 
 .space-between {
@@ -48,17 +81,91 @@ canvas {
     display: none
 }
 
+.clean-list {
+    list-style-type: none;
+}
+
+
+
+
 /* LAYOUT */
 
-.grid-container {
+/* .main-layout {
+    margin: auto;
+    max-width: 400px;
+} */
 
+.main-layout>*:not(.full) {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 400px;
 }
-.control-box{
+
+.meme-editor {
+    width: 100%
+}
+
+.grid-container {}
+
+.control-box {
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr;
-    gap:15px
+    gap: 15px
 }
-.canvas-container{
-    width: 500px;
+
+.canvas-container {
+    width: 100%;
     /* width: 100%; */
+}
+
+.upper-buttons .item {
+    width: 50px;
+    height: 50px;
+
+}
+
+.color-button {
+    height: 50px;
+}
+
+.upper-buttons.grid {
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: 1fr 1fr;
+}
+
+.titles-links {
+    width: 250px
+}
+
+/* components */
+
+
+
+
+
+
+
+@media(min-width:550px) {
+    .main-layout {
+        width: 100%;
+    }
+
+    .main-layout>*:not(.full) {
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 600px;
+    }
+    .gellery-container{
+        grid-template-columns: repeat(4,1fr);
+        gap:10px;
+        transition:0.4s
+
+    }
+    .gellery-container img{
+        transition:0.3s
+    }
+.gellery-container img:hover{
+    transform: scale(1.03);
+    box-shadow:0px 0px 7px 3px #edbd38;
+}
 }

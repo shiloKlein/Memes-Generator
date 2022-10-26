@@ -11,16 +11,23 @@
 </head>
 
 <body onload="onInit()">
-    <section class="main-layout grid">
+    <section class="main-layout grid grid-center">
         <header class="full flex space-between">
             <p class="logo">Memgen</p>
-            <button onclick="openGallery()">gallery</button>
-            <button onclick="openEditor()">editor</button>
+            <ul class="clean-list flex">
+                <li ><button onclick="openGallery()">gallery</button></li>
+                <li><button onclick="openEditor()">editor</button></li>
+                <li><button onclick="openAbout()">about</button></li>
+            </ul>
+
+
+
             <p>☰</p>
         </header>
         <section class="img-gallery">
             <input oninput="onTitleSearch()" type="text">
-            <section class="titles-links flex space-between"><a href="#">funny</a><a href="#">cool</a><a href="#">pets</a>
+            <section class="titles-links flex space-between"><a href="#">funny</a><a href="#">cool</a><a
+                    href="#">pets</a>
             </section>
 
             <section class="gellery-container grid grid-center"></section>
@@ -42,17 +49,25 @@
         <section class="meme-editor grid drid-center hide">
             <section class="canvas-container  grid grid-center">
 
-                <canvas width="400px" height="400px"></canvas>
-                
-                <section class="control-box grid grid-center">
-                    <input type="text" oninput="onTextInput(this.value)">
-                    <lable>stroke color<input type="color" oninput="onStrokeColorChange(this.value)"></lable>
-                    <button onclick="onFontDecrease()">🗛</button>
-                    <button onclick="onFontIncrease()">🗚</button>
-                    <button onclick="onSwitchLines()">⇆</button>
+                <canvas width="350px" height="350px"></canvas>
+            </section>
+            <section class="control-box">
+                <input type="text" oninput="onTextInput(this.value)">
+                <section class="upper-buttons grid">
+                    <button class="color-button">
+                        <lable class="item">stroke<input type="color" oninput="onStrokeColorChange(this.value)"></lable>
+                    </button>
+                    <button class="color-button">
+                        <lable>fill<input type="color" oninput="onFillColorChange(this.value)"></lable>
+                    </button>
+                    <button class="item" onclick="onFontDecrease()">🗛</button>
+                    <button class="item" onclick="onFontIncrease()">🗚</button>
+                    <button class="item" onclick="onSwitchLines()">⇆</button>
+                </section>
 
 
-                    <!-- <button>↓↑</button>
+
+                <!-- <button>↓↑</button>
                     <button>+</button>
                     <button>🗑</button>
                     <form onsubmit="onSubmit(event)">
@@ -91,10 +106,10 @@
                         </fieldset>
                     </form> -->
 
-                    <button class="share-btn">share</button>
-                </section>
-
+                <button class="share-btn">share</button>
             </section>
+
+
         </section>
 
         <section class="saved-gallery"></section>
