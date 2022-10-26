@@ -3,53 +3,77 @@
 let gCanvas
 let gCtx
 
+// let cuur
+
 const TOUCH_EVS = ['touchstart', 'touchmove', 'touchend']
 
 
 function initCanvas() {
     gCanvas = document.querySelector('canvas')
     gCtx = gCanvas.getContext('2d')
+    initEventListeners()
     // resizeCanvas()
 }
-
-function renderMeme(){
-    console.log('render meme');
-    const meme = getMeme()
-    const img = new Image()
-    img.src =`./images/${meme.url}`
-    var div = document.querySelector('.control-box')
-    console.log(gCanvas.width, gCanvas.height);
-    
-    renderImg(img)
+// EVENT LISTENERS////////////
+function initEventListeners() {
+    gCanvas.addEventListener('mousedown', canvasClicked)
 }
-function renderImg(img) {
+
+
+
+
+
+function canvasClicked(ev) {
+    console.log(ev);
+    const clickedText = gMeme.lines.find(line => {
+        // Check if the click coordinates are inside the bar coordinates
+
+        return ev.offsetX > star.x && ev.offsetX < star.x + BAR_WIDTH &&
+            ev.offsetY > star.y && ev.offsetY < star.y + star.rate
+    })
+}
+
+
+
+function renderMeme(imgId) {
+    const meme = getMeme(imgId)
+    const img = new Image()
+    img.src = `./images/${meme.url}`
+    var div = document.querySelector('.control-box')
+
+    drawImg(img)
+}
+function drawImg(img) {
     // Draw the img on the canvas
-    console.log(img);
     gCtx.drawImage(img, 0, 0, gCanvas.width, gCanvas.height)
     renderText()
-    gCtx.lineWidth = 2
-    gCtx.strokeStyle = 'brown'
-    gCtx.fillStyle = 'black'
 
-    gCtx.font = '40px Arial'
-  
-    }
-    function renderText(){
-        const width = gCanvas.width
-        const height = gCanvas.height
-        console.log(width);
+}
+function renderText() {
+    let idx = 0
+    gMeme.lines.forEach((line) => {
+        const canvasWidth = gCanvas.width
+        const canvasHeight = gCanvas.height
+        const { txt, size, align, color } = line
         gCtx.lineWidth = 2
-        gCtx.strokeStyle = 'brown'
+        gCtx.strokeStyle = color
         gCtx.fillStyle = 'black'
-        gCtx.textAlign = 'center'
-        var txt = 'this is trump'
-    
-        gCtx.font = '40px Arial'
-        gCtx.fillText(txt, width/2, 40) // Draws (fills) a given text at the given (x, y) position.
-        gCtx.strokeText(txt, width/2, 40) // Draws (strokes) a given text at the given (x, y) position.
-        var q = gCtx.measureText(txt).width
-        console.log(q);
-    }
+        gCtx.textAlign = align
+
+        // font height; 
+        setLinePos(idx, canvasWidth, canvasHeight)
+        console.log(line);
+
+        gCtx.font = `${size}px Arial`
+
+        gCtx.fillText(txt, line.x, line.y) // Draws (fills) a given text at the given (x, y) position.
+        gCtx.strokeText(txt, line.x, line.y) // Draws (strokes) a given text at the given (x, y) position.
+        line.width = gCtx.measureText(txt).width
+        console.log(gMeme.lines);
+        idx++
+    })
+
+}
 
 function resizeCanvas() {
 
@@ -63,20 +87,39 @@ function resizeCanvas() {
 }
 
 
-function onTextInput(ev, text) {
-    ev.preventDefault()
+// INPUT FUNCTIONS ////////////////////
 
-    drawText(text, gCanvas.width / 2, 30)
+function onTextInput(txt) {
+    // ev.preventDefault()
+    setLineText(txt)
+    renderMeme()
+}
+
+function onStrokeColorChange(color) {
+    setTextColor(color)
+    renderMeme()
+}
+function onFontIncrease() {
+    setFontSize(1)
+    renderMeme()
+}
+function onFontDecrease() {
+    setFontSize(-1)
+    renderMeme()
+}
+function onSwitchLines() {
+    setLineIdx()
 }
 
 // SPECIFIC SHAPE DRAW FUNCTIONS
 
 function drawText(text, x, y) {
+    const size = gMeme.lines[gMeme.selectedLineIdx].size
     gCtx.lineWidth = 2
     gCtx.strokeStyle = 'brown'
     gCtx.fillStyle = 'black'
 
-    gCtx.font = '40px Arial'
+    gCtx.font = `2px Arial`
     gCtx.fillText(text, x - 40, y) // Draws (fills) a given text at the given (x, y) position.
     gCtx.strokeText(text, x - 40, y) // Draws (strokes) a given text at the given (x, y) position.
 }
