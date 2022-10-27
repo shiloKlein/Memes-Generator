@@ -60,14 +60,13 @@ function drawImg(img) {
     gCtx.drawImage(img, 0, 0, gCanvas.width, gCanvas.height)
     renderText()
     setTextBorder()
-
 }
 function renderText() {
     let idx = 0
     gMeme.lines.forEach((line) => {
         const canvasWidth = gCanvas.width
         const canvasHeight = gCanvas.height
-        const { txt, size, align, strokeColor, fillColor } = line
+        let { txt, size, align, strokeColor, fillColor } = line
         gCtx.lineWidth = 2
         gCtx.strokeStyle = strokeColor
         gCtx.fillStyle = fillColor
@@ -77,10 +76,21 @@ function renderText() {
         if(!isDrag)setLinePos(idx, canvasWidth, canvasHeight)
 
         gCtx.font = `${size}px Arial`
-
+        line.width = gCtx.measureText(txt).width
+        //     // if txt line width > canvas.width  txt size = line.width = gCtx.measureText(txt).width ratio = c width/ twidth txtsize * ratio -1
+        if (line.width> gCanvas.width){
+            console.log(+(gCtx.font[0]+gCtx.font[1]));
+            const ratio = gCanvas.width/line.width
+            size*=ratio
+            console.log(size);
+            // if(size>15){
+            gCtx.font = `${size}px Arial`
+            line.width = gCtx.measureText(txt).width
+        // }
+        }
         gCtx.fillText(txt, line.x, line.y) // Draws (fills) a given text at the given (x, y) position.
         gCtx.strokeText(txt, line.x, line.y) // Draws (strokes) a given text at the given (x, y) position.
-        line.width = gCtx.measureText(txt).width
+
         idx++
     })
 
@@ -131,6 +141,25 @@ function onSwitchLines() {
     setLineIdx()
     renderMeme()
 }
+function onLineDelete(){
+    
+}
+
+function onLineAdd(){
+    document.querySelector('.meme-text-input').value=''
+    document.querySelector('.meme-text-input').focus()
+    addLine()
+    renderMeme()
+    setTextBorder()
+}
+
+function onSaveClick(){
+    const editedMemeImg = gCanvas.toDataURL()
+    updateMemeDataUrl(editedMemeImg)
+    console.log(gMeme);
+    saveMemeToGallery()
+    renderSavedmemesGallery()
+}
 
 // SPECIFIC SHAPE DRAW FUNCTIONSgMeme
 
@@ -146,7 +175,10 @@ function onSwitchLines() {
 // }
 
 function setTextBorder() {
-
+    const meme = getCurrMeme()
+    let counter = 0
+    meme.lines.forEach((line)=> {if(line.txt)counter++})
+    if (counter===0) return
     // console.log(width, height, x, y, lineIdx);
     // console.log(x-width/2, y, x+width/2, y-height);
     gCtx.beginPath()
@@ -168,8 +200,8 @@ function onDown(ev) {
     const pos = getEvPos(ev)
     const line = isTextClicked(pos)
     if (!line) return
-    console.log(line.idx);
     setLineIdx(line.idx)
+    console.log(gMeme.selectedLineIdx);
     setLineDrag(true)
     renderMeme()
     console.log(gMeme.lines[gMeme.selectedLineIdx].isDrag);
@@ -255,7 +287,4 @@ function setLineDrag(isDrag) {
 function moveText(dx, dy) {
     gMeme.lines[gMeme.selectedLineIdx].x += dx
     gMeme.lines[gMeme.selectedLineIdx].y += dy
-    // console.log(dx);
-    console.log(gMeme.lines[gMeme.selectedLineIdx].x);
-    // console.log(gMeme.lines[gMeme.selectedLineIdx].y);
 }  

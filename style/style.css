@@ -138,6 +138,10 @@ canvas {
 }
 
 /* components */
+.emoji:hover{
+    transform: scale(1.2);
+    cursor:pointer;
+}
 
 
 

@@ -1,6 +1,9 @@
 'use strict'
 
+const SAVED_MEMS_KEY = 'saved-mems'
+var gSavedMemes = []
 
+var emojis = ['🤧','😵','🤯','🤠','😎','☠','💩','👹']
 var gKeywordSearchCountMap = { funny: 0, cool: 1, pets: 3, }
 
 
@@ -29,7 +32,7 @@ var gMeme = {
     selectedLineIdx: 0,
     lines: [
         {
-            txt: 'I sometimes eat Falafel',
+            txt: '',
             size: 40,
             align: 'center',
             srokeColor: 'black',
@@ -38,18 +41,6 @@ var gMeme = {
             x: 0,
             y: 0,
             idx:0,
-            isDrag: false,
-        },
-        {
-            txt: 'For me puky is like jquery',
-            size: 40,
-            align: 'center',
-            strokeColor: 'black',
-            fillColor:'white',
-            width:0,
-            x:0,
-            y:0,
-            idx:1,
             isDrag: false,
         },
     ]
@@ -63,6 +54,16 @@ const meme = { id: i, url: `meme-imgs/${i}.jpg`, keywords: ['funny', 'cat'], }
 
 function setImg(imgId) {
     gMeme.selectedImgId = imgId;
+}
+function setImgFromSaved(idx){
+    const savedMemes = loadFromStorage(SAVED_MEMS_KEY)
+    const imgId = savedMemes[idx].selectedImgId
+    setImg(imgId)
+    return imgId;
+}
+function setcurrMeme(idx){
+    const savedMemes = loadFromStorage(SAVED_MEMS_KEY)
+    gMeme = savedMemes[idx]
 }
 
 function setTextStrokeColor(color) {
@@ -79,12 +80,8 @@ function setFontSize(size) {
     gMeme.lines[selectedLineIdx].size += size
 }
 function setLineIdx(idx) {
-    // gMeme.selectedLineIdx
-    if(idx){
         gMeme.selectedLineIdx=idx
-        return
-    }
-    if(gMeme.selectedLineIdx >= gMeme.lines.length-1)gMeme.selectedLineIdx=0
+    if(gMeme.selectedLineIdx > gMeme.lines.length-1)gMeme.selectedLineIdx=0
     // else gMeme.selectedLineIdx++
 }
 
@@ -138,4 +135,70 @@ function getTextPosition(isCurrLine) {
 function setLineText(txt) {
     const lineIdx = gMeme.selectedLineIdx
     gMeme.lines[lineIdx].txt = txt
+}
+
+function addLine(){
+    gMeme.selectedLineIdx++
+    const newMeme = {
+        txt: '',
+        size: 40,
+        align: 'center',
+        srokeColor: 'black',
+        fillColor:'white',
+        width:0,
+        x: 0,
+        y: 0,
+        idx:gMeme.selectedLineIdx,
+        isDrag: false,
+    }
+    gMeme.lines.push(newMeme)
+}
+
+
+
+// RANDOM MEME HANDLING
+function setRandomMeme() {
+    const memes = getMemes()
+    const randomImgidx = getRandomIntInclusive(0, memes.length - 1)
+    const randomLineCount = Math.random() < 0.5 ? 1 : 2
+
+    for (let i = 0; i < randomLineCount; i++) {
+        setRandomLines(i)
+    }
+    gMeme.selectedImgId = randomImgidx
+}
+function setRandomLines(idx) {
+    const txt = getSampleTxt()
+    gMeme.lines[idx].txt = txt[getRandomIntInclusive(0, txt.length - 1)]
+    gMeme.lines[idx].size = getRandomIntInclusive(15, 70)
+    gMeme.lines[idx].strokeColor = getRandomColor()
+    gMeme.lines[idx].fillColor = getRandomColor()
+}
+
+function getSampleTxt() {
+    return gSampleTexts
+}
+const gSampleTexts = [
+    "yah. shure", 'it wasn\'t me', 'can\'t promise anything',
+    'i can do anything i want', 'wait untill you hear me sing',
+    'dont bother', 'oooopsy', 'can i borrow this?',
+    'tomorrow', 'will you please go and come back later?',
+    'yesssssss', 'nooooooooo',
+    'what the hell...'
+]
+
+function loadSavedMemes(){
+    gSavedMemes=loadFromStorage(SAVED_MEMS_KEY)
+}
+
+function updateMemeDataUrl(dataURL){
+    gMeme.dataURL = dataURL
+}
+
+function saveMemeToGallery(){
+    if(loadFromStorage(SAVED_MEMS_KEY)) gSavedMemes = loadFromStorage(SAVED_MEMS_KEY)
+
+    const savedMeme = JSON.parse(JSON.stringify(gMeme))
+    gSavedMemes.push(savedMeme)
+    saveToStorage(SAVED_MEMS_KEY,gSavedMemes)
 }
