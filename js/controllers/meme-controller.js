@@ -77,12 +77,9 @@ function renderText() {
 
         gCtx.font = `${size}px Arial`
         line.width = gCtx.measureText(txt).width
-        //     // if txt line width > canvas.width  txt size = line.width = gCtx.measureText(txt).width ratio = c width/ twidth txtsize * ratio -1
         if (line.width> gCanvas.width){
-            console.log(+(gCtx.font[0]+gCtx.font[1]));
             const ratio = gCanvas.width/line.width
             size*=ratio
-            console.log(size);
             // if(size>15){
             gCtx.font = `${size}px Arial`
             line.width = gCtx.measureText(txt).width
