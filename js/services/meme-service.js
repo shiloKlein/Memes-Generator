@@ -2,8 +2,10 @@
 
 const SAVED_MEMS_KEY = 'saved-mems'
 var gSavedMemes = []
+var gIsCreating
 
-var emojis = ['🤧','😵','🤯','🤠','😎','☠','💩','👹']
+
+var emojis = ['🤧', '😵', '🤯', '🤠', '😎', '☠', '💩', '👹']
 var gKeywordSearchCountMap = { funny: 0, cool: 1, pets: 3, }
 
 
@@ -32,36 +34,38 @@ var gMeme = {
     selectedLineIdx: 0,
     lines: [
         {
-            txt: '',
+            txt: 'place your text here',
             size: 40,
             align: 'center',
-            srokeColor: 'black',
-            fillColor:'white',
-            width:0,
+            strokeColor: 'black',
+            fillColor: 'white',
+            font:'impact',
+            width: 0,
             x: 0,
             y: 0,
-            idx:0,
+            idx: 0,
             isDrag: false,
+            hasMoved:false
         },
     ]
 }
 
-function createMeme(){
-    const id = gMemes.length+1
-const meme = { id: i, url: `meme-imgs/${i}.jpg`, keywords: ['funny', 'cat'], }
+function createMeme() {
+    const id = gMemes.length + 1
+    const meme = { id: i, url: `meme-imgs/${i}.jpg`, keywords: ['funny', 'cat'], }
 }
 
 
 function setImg(imgId) {
     gMeme.selectedImgId = imgId;
 }
-function setImgFromSaved(idx){
+function setImgFromSaved(idx) {
     const savedMemes = loadFromStorage(SAVED_MEMS_KEY)
     const imgId = savedMemes[idx].selectedImgId
     setImg(imgId)
     return imgId;
 }
-function setcurrMeme(idx){
+function setcurrMeme(idx) {
     const savedMemes = loadFromStorage(SAVED_MEMS_KEY)
     gMeme = savedMemes[idx]
 }
@@ -75,24 +79,66 @@ function setTextFillColor(color) {
     gMeme.lines[selectedLineIdx].fillColor = color
 }
 
+function setFont(font){
+    gMeme.lines.forEach(line=>
+        line.font=font)
+}
+
 function setFontSize(size) {
     const { selectedLineIdx } = gMeme
     gMeme.lines[selectedLineIdx].size += size
 }
 function setLineIdx(idx) {
-        gMeme.selectedLineIdx=idx
-    if(gMeme.selectedLineIdx > gMeme.lines.length-1)gMeme.selectedLineIdx=0
+    gMeme.selectedLineIdx = idx
+    if (gMeme.selectedLineIdx > gMeme.lines.length - 1) gMeme.selectedLineIdx = 0
     // else gMeme.selectedLineIdx++
 }
-
-function setLinePos(idx,width, height){
-    const line =gMeme.lines[idx]
-    // console.log(idx);
-    if(idx===0)line.y = 70
-    else if(idx===1)line.y = height-40
-    else line.y =height/2
-    line.x = width/2
+function setDirection(direction) {
+    gMeme.lines[gMeme.selectedLineIdx].align=direction
 }
+function checkAlignment() {
+    let pos
+    switch (gMeme.lines[gMeme.selectedLineIdx].align) {
+        case 'center':
+        case undefined:
+            // console.log('lllllllllll');
+            pos = gCanvas.width/2
+            
+            // console.log(direction);
+            break;
+        case 'left':
+            pos = 10
+            break;
+        case 'right':
+            pos = gCanvas.width - gCtx.measureText(gMeme.lines[gMeme.selectedLineIdx].txt).width/2-3 
+            console.log(pos);
+    
+            break;
+    }
+    // console.log(pos);
+    return pos
+}
+function setLinePos(idx, width, height) {
+    const alignment = checkAlignment()
+    console.log(gIsCreating);
+    if (gIsCreating === undefined) gIsCreating = true
+    if (!gIsCreating) return
+    console.log(alignment);
+    idx = gMeme.lines.length - 1
+    const line = gMeme.lines[idx]
+    if(!line.hasMoved){
+        if (idx === 0) line.y = 70
+        else if (idx === 1) line.y = height - 40
+        else line.y = height / 2
+    }
+    // console.log(alignment);
+    line.x = alignment
+    console.log(gMeme.lines[gMeme.selectedLineIdx]);
+    // console.log(gMeme.lines.length - 1);
+    // console.log(line.x, line.y);
+    // gIsCreating=false
+}
+
 function getMeme(imgId) {
     let img = ''
     if (!imgId) img = gMemes[gMeme.selectedImgId - 1]
@@ -101,7 +147,7 @@ function getMeme(imgId) {
     }
     return img
 }
-function getCurrMeme(){
+function getCurrMeme() {
     return gMeme
 }
 
@@ -109,26 +155,27 @@ function getMemes() {
     return gMemes
 }
 
-function getDragStatus(){
+function getfont(){
+    return gMeme.lines[0].font
+}
+
+function getDragStatus() {
     return gMeme.lines[gMeme.selectedLineIdx].isDrag
 }
 
 function getTextPosition(isCurrLine) {
-    // const gMeme = getCurrMeme()
-    // const { width, size: height, x, y } = gMeme.lines[gMeme.selectedLineIdx]
-    // const { selectedLineIdx: lineIdx } = meme
-    const lines = gMeme.lines.map(line=>{
-        const { width, size: height, x, y,idx }=line
+    const lines = gMeme.lines.map(line => {
+        const { width, size: height, x, y, idx } = line
         const pos = {
-        x: x - width / 2,
-        y: y - height,
-        width,
-        height: height * 1.2,
-        idx,
-    }
-    return pos
+            x: x - width / 2,
+            y: y - height,
+            width,
+            height: height * 1.2,
+            idx,
+        }
+        return pos
     })
-    if(isCurrLine)return lines[gMeme.selectedLineIdx]
+    if (isCurrLine) return lines[gMeme.selectedLineIdx]
     return lines
 }
 
@@ -137,22 +184,45 @@ function setLineText(txt) {
     gMeme.lines[lineIdx].txt = txt
 }
 
-function addLine(){
+function addLine() {
     gMeme.selectedLineIdx++
+    gIsCreating = true
     const newMeme = {
-        txt: '',
+        txt: 'place your text here',
         size: 40,
         align: 'center',
         srokeColor: 'black',
-        fillColor:'white',
-        width:0,
+        fillColor: 'white',
+        font:getfont(),
+        width: 0,
         x: 0,
         y: 0,
-        idx:gMeme.selectedLineIdx,
+        idx: gMeme.selectedLineIdx,
         isDrag: false,
     }
     gMeme.lines.push(newMeme)
 }
+
+function isTextClicked(clickedPos) {
+    console.log(clickedPos);
+    const positions = getTextPosition()
+    const clickedText = positions.find(textPos => {
+        // Check if the click coordinates are inside the bar coordinates
+        return clickedPos.x > textPos.x && clickedPos.x < textPos.x + textPos.width &&
+            clickedPos.y > textPos.y && clickedPos.y < textPos.y + textPos.height
+    })
+    return clickedText
+}
+
+
+function setLineDrag(isDrag) {
+    gMeme.lines[gMeme.selectedLineIdx].isDrag = isDrag
+}
+
+function moveText(dx, dy) {
+    gMeme.lines[gMeme.selectedLineIdx].x += dx
+    gMeme.lines[gMeme.selectedLineIdx].y += dy
+} 
 
 
 
@@ -187,18 +257,18 @@ const gSampleTexts = [
     'what the hell...'
 ]
 
-function loadSavedMemes(){
-    gSavedMemes=loadFromStorage(SAVED_MEMS_KEY)
+function loadSavedMemes() {
+    gSavedMemes = loadFromStorage(SAVED_MEMS_KEY)
 }
 
-function updateMemeDataUrl(dataURL){
+function updateMemeDataUrl(dataURL) {
     gMeme.dataURL = dataURL
 }
 
-function saveMemeToGallery(){
-    if(loadFromStorage(SAVED_MEMS_KEY)) gSavedMemes = loadFromStorage(SAVED_MEMS_KEY)
+function saveMemeToGallery() {
+    if (loadFromStorage(SAVED_MEMS_KEY)) gSavedMemes = loadFromStorage(SAVED_MEMS_KEY)
 
     const savedMeme = JSON.parse(JSON.stringify(gMeme))
     gSavedMemes.push(savedMeme)
-    saveToStorage(SAVED_MEMS_KEY,gSavedMemes)
+    saveToStorage(SAVED_MEMS_KEY, gSavedMemes)
 }

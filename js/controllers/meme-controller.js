@@ -3,10 +3,10 @@
 let gCanvas
 let gCtx
 
+let isLineBorder = true
 let gStartPos
 
 const TOUCH_EVS = ['touchstart', 'touchmove', 'touchend']
-
 
 function initCanvas() {
     gCanvas = document.querySelector('canvas')
@@ -33,20 +33,6 @@ function addTouchListeners() {
     gCanvas.addEventListener('touchend', onUp)
 }
 
-
-
-// function onDown(ev) {
-//     console.log(ev);
-//     const clickedText = gMeme.lines.find(line => {
-//         // Check if the click coordinates are inside the bar coordinates
-
-//         return ev.offsetX > star.x && ev.offsetX < star.x + BAR_WIDTH &&
-//             ev.offsetY > star.y && ev.offsetY < star.y + star.rate
-//     })
-// }
-
-
-
 function renderMeme(imgId) {
     const meme = getMeme(imgId)
     const img = new Image()
@@ -54,43 +40,47 @@ function renderMeme(imgId) {
     var div = document.querySelector('.control-box')
 
     drawImg(img)
+    renderText()
+    setTextBorder()
 }
 function drawImg(img) {
     // Draw the img on the canvas
     gCtx.drawImage(img, 0, 0, gCanvas.width, gCanvas.height)
-    renderText()
-    setTextBorder()
+    
 }
 function renderText() {
     let idx = 0
     gMeme.lines.forEach((line) => {
         const canvasWidth = gCanvas.width
         const canvasHeight = gCanvas.height
-        let { txt, size, align, strokeColor, fillColor } = line
+        let { txt, size, align, strokeColor, fillColor, font } = line
         gCtx.lineWidth = 2
         gCtx.strokeStyle = strokeColor
         gCtx.fillStyle = fillColor
-        gCtx.textAlign = align
+        gCtx.textAlign = 'center'
         const isDrag = getDragStatus()
+        console.log(isDrag);
         // font height; 
-        if(!isDrag)setLinePos(idx, canvasWidth, canvasHeight)
-
-        gCtx.font = `${size}px Arial`
+        if (!isDrag) setLinePos(idx, canvasWidth, canvasHeight)
+        gCtx.font = `${size}px ${font}`
         line.width = gCtx.measureText(txt).width
-        if (line.width> gCanvas.width){
-            const ratio = gCanvas.width/line.width
-            size*=ratio
+        if (line.width > gCanvas.width) {
+            const ratio = gCanvas.width / line.width
+            size *= ratio
             // if(size>15){
-            gCtx.font = `${size}px Arial`
+            gCtx.font = `${size}px ${font}`
             line.width = gCtx.measureText(txt).width
-        // }
+            // }
         }
+        // containing the text in the canvas
+        if (line.x - line.width / 2 < 0) line.x = line.width / 2
+        if (line.x + line.width / 2 > gCanvas.width) line.x = gCanvas.width - line.width / 2
+        if (line.y > gCanvas.height-5 ) line.y = gCanvas.height-5
+        if (line.y-size < 0 ) line.y = size+3
+        
         gCtx.fillText(txt, line.x, line.y) // Draws (fills) a given text at the given (x, y) position.
         gCtx.strokeText(txt, line.x, line.y) // Draws (strokes) a given text at the given (x, y) position.
-
-        idx++
     })
-
 }
 
 function resizeCanvas() {
@@ -100,14 +90,8 @@ function resizeCanvas() {
     console.log(elContainer);
     gCanvas.width = elContainer.offsetWidth - 50
     gCanvas.height = elContainer.offsetWidth - 50
-    console.log(gCanvas.width);
     renderMeme()
-    // console.log(elContainer);
-    // console.log(gCanvas.width);
-    // Unless needed, better keep height fixed.
-    // gCanvas.height = elContainer.offsetHeight
 }
-
 
 // INPUT FUNCTIONS ////////////////////
 
@@ -117,6 +101,9 @@ function onTextInput(txt) {
     renderMeme()
 }
 
+function openColorPalette(type){
+    document.querySelector(`.${type}`).click()
+}
 function onStrokeColorChange(color) {
     setTextStrokeColor(color)
     renderMeme()
@@ -130,6 +117,10 @@ function onFontIncrease() {
     setFontSize(1)
     renderMeme()
 }
+function onFontChange(font){
+    setFont(font)
+    renderMeme()
+}
 function onFontDecrease() {
     setFontSize(-1)
     renderMeme()
@@ -138,19 +129,32 @@ function onSwitchLines() {
     setLineIdx()
     renderMeme()
 }
-function onLineDelete(){
-    
+
+function onLineDelete() {
+    const meme = getCurrMeme()
+
+    if (meme.lines.length === 1) return
+    meme.lines.splice([meme.selectedLineIdx], 1)
+    setLineIdx(meme.selectedLineIdx + 1)
+    renderMeme()
 }
 
-function onLineAdd(){
-    document.querySelector('.meme-text-input').value=''
+function onAlignText(direction) {
+    setDirection(direction)
+    console.log(gMeme.selectedLineIdx);
+    renderMeme()
+}
+
+function onLineAdd() {
+    isLineBorder = true
+    document.querySelector('.meme-text-input').value = ''
     document.querySelector('.meme-text-input').focus()
     addLine()
     renderMeme()
     setTextBorder()
 }
 
-function onSaveClick(){
+function onSaveClick() {
     const editedMemeImg = gCanvas.toDataURL()
     updateMemeDataUrl(editedMemeImg)
     console.log(gMeme);
@@ -160,22 +164,12 @@ function onSaveClick(){
 
 // SPECIFIC SHAPE DRAW FUNCTIONSgMeme
 
-// function drawText(text, x, y) {
-//     const size = gMeme.lines[gMeme.selectedLineIdx].size
-//     gCtx.lineWidth = 2
-//     gCtx.strokeStyle = 'brown'
-//     gCtx.fillStyle = 'black'
-
-//     gCtx.font = `2px Arial`
-//     gCtx.fillText(text, x - 40, y) // Draws (fills) a given text at the given (x, y) position.
-//     gCtx.strokeText(text, x - 40, y) // Draws (strokes) a given text at the given (x, y) position.
-// }
-
 function setTextBorder() {
+    if (!isLineBorder) return
     const meme = getCurrMeme()
     let counter = 0
-    meme.lines.forEach((line)=> {if(line.txt)counter++})
-    if (counter===0) return
+    meme.lines.forEach((line) => { if (line.txt) counter++ })
+    if (counter === 0) return
     // console.log(width, height, x, y, lineIdx);
     // console.log(x-width/2, y, x+width/2, y-height);
     gCtx.beginPath()
@@ -184,42 +178,43 @@ function setTextBorder() {
     gCtx.stroke();
 }
 
-
-
-// HELPER FUNCTIONS
-
-
-
 // DRAG AND DROP
 
 function onDown(ev) {
+    gIsCreating = false
     //Get the ev pos from mouse or touch
     const pos = getEvPos(ev)
     const line = isTextClicked(pos)
-    if (!line) return
+    if (!line) {
+        isLineBorder = false
+        renderMeme()
+        return
+    }
+    isLineBorder = true
     setLineIdx(line.idx)
-    console.log(gMeme.selectedLineIdx);
     setLineDrag(true)
+    console.log('asdlk');
     renderMeme()
-    console.log(gMeme.lines[gMeme.selectedLineIdx].isDrag);
     //Save the pos we start from 
     gStartPos = pos
+    const meme = getCurrMeme()
+    const elTxtInputBox = document.querySelector('.meme-text-input')
+    elTxtInputBox.value = meme.lines[line.idx].txt
+    elTxtInputBox.focus()
+    document.querySelector('.meme-text-input').focus()
     document.body.style.cursor = 'grabbing'
 
 }
 
 function onMove(ev) {
     const meme = getCurrMeme()
+    meme.lines[meme.selectedLineIdx].hasMoved=true
     const { isDrag } = meme.lines[meme.selectedLineIdx]
     if (!isDrag) return
     const pos = getEvPos(ev)
-    console.log();
     //Calc the delta , the diff we moved
     const dx = pos.x - gStartPos.x
     const dy = pos.y - gStartPos.y
-    console.log(gStartPos);
-    console.log(pos);
-    console.log(dx,dy);
     moveText(dx, dy)
     //Save the last pos , we remember where we`ve been and move accordingly
     gStartPos = pos
@@ -231,12 +226,13 @@ function onMove(ev) {
 }
 
 function onUp() {
+    const a = document.querySelector('.meme-text-input').focus()
     setLineDrag(false)
+    gIsCreating = undefined
     document.body.style.cursor = 'auto'
 }
 
 function getEvPos(ev) {
-
     //Gets the offset pos , the default pos
     let pos = {
         x: ev.offsetX,
@@ -258,30 +254,4 @@ function getEvPos(ev) {
 }
 
 // SERVICE
-function isTextClicked(clickedPos) {
-    console.log(clickedPos);
-    const positions = getTextPosition()
-    const clickedText = positions.find(textPos => {
-        // Check if the click coordinates are inside the bar coordinates
-        // console.log(clickedPos.x > textPos.x && clickedPos.x < textPos.x + textPos.width &&
-        //     clickedPos.y > textPos.y && clickedPos.y < textPos.y + textPos.height);
-        return clickedPos.x > textPos.x && clickedPos.x < textPos.x + textPos.width &&
-        clickedPos.y > textPos.y && clickedPos.y < textPos.y + textPos.height
-      })
-      return clickedText
-    //   console.log(clickedText);
-    // gMeme.lines
-    // const { x, y } = gMeme.lines
-   
-}
-
-
-function setLineDrag(isDrag) {
-    gMeme.lines[gMeme.selectedLineIdx].isDrag = isDrag
-    // gMeme.lines[gMeme.selectedLineIdx].isDrag
-}
-
-function moveText(dx, dy) {
-    gMeme.lines[gMeme.selectedLineIdx].x += dx
-    gMeme.lines[gMeme.selectedLineIdx].y += dy
-}  
+ 

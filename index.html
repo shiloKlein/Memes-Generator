@@ -12,7 +12,7 @@
 
 <body onload="onInit()">
     <div class="main-screen full" onclick="toggleMenu()"></div>
-    <section class="main-layout grid grid-center">
+    <section class="main-layout">
 
         <header class="full flex space-between">
             <p class="logo"><img src="./images/LOGO.png"></p>
@@ -37,72 +37,89 @@
             <button onclick="createRandomMeme()">Generate random Meme</button>
             <!-- <section class="grid grid-center"> -->
             <input oninput="onTitleSearch()" type="text" placeholder="Enter search keywords 🔍">
-            <section class="gallery-container grid grid-center"></section>
+            <section class="gallery-container grid-center"></section>
         </section>
 
-  
 
-    <section class="meme-editor grid drid-center hide">
 
-        <section class="canvas-container  grid grid-center grid-item">
-            <canvas width="350px" height="350px"></canvas>
-        </section>
-        <section class="control-box grid-item">
-            <input type="text" class="meme-text-input" placeholder="write tour line here" oninput="onTextInput(this.value)">
-            <section class="upper-buttons grid grid-center">
-                <div class="
-">
-                    <lable class="item">stroke<input class="color-button" type="color" oninput="onStrokeColorChange(this.value)"></lable>
-               </div>
-             
-                    <lable>fill<input class="color-button" type="color" oninput="onFillColorChange(this.value)"></lable>
-             
-                <button class="item" onclick="onFontDecrease()">🗛</button>
-                <button class="item" onclick="onFontIncrease()">🗚</button>
-                <!-- <button class="item" onclick="onSwitchLines()">⇆</button> -->
-                <button class="item" onclick="onLineAdd()">⩲</button>
-                <button class="item" onclick="onLineDelete()">🗑</button>
-                <button class=" item save" onclick="onSaveClick()">💾</button>
+        <section class="meme-editor  grid-center hide">
+
+            <section class="canvas-container  grid-center grid-item">
+                <canvas width="350px" height="350px"></canvas>
             </section>
-            <section>
-                <ul class="clean-list flex">
-                    <li class="emoji" onclick="onAddEmoji(this.value)">🤧</li>
-                    <li class="emoji" onclick="onAddEmoji(this.value)">😵</li>
-                    <li class="emoji" onclick="onAddEmoji(this.value)">🤯</li>
-                    <li class="emoji" onclick="onAddEmoji(this.value)">🤠</li>
-                    <li class="emoji" onclick="onAddEmoji(this.value)">😎</li>
-                    <li class="emoji" onclick="onAddEmoji(this.value)">☠</li>
-                    <li class="emoji" onclick="onAddEmoji(this.value)">💩</li>
-                    <li class="emoji" onclick="onAddEmoji(this.value)">👹</li>
-                </ul>
-            </section>
-            <!-- <section class="save-options">
+            <section class="control-box grid-item">
+                <input type="text" class="meme-text-input" placeholder="write tour line here"
+                    oninput="onTextInput(this.value)">
+                <section class="upper-buttons grid-center">
+
+
+                    <label><img src="./images/icons/pencil.svg" alt="stroke color">
+                        <input class="color-btn fillInput" type="color"
+                            oninput="onStrokeColorChange(this.value)"></label>
+                    <label><img src="./images/icons/brush.svg" alt="fill color">
+                        <input class="color-btn fillInput" type="color" oninput="onFillColorChange(this.value)"></label>
+
+
+                    <select onchange="onFontChange(this.value)">
+                        <option>Impact</option>
+                        <option>Tahoma</option>
+                        <option>Helvetica</option>
+                    </select>
+
+                    <button class="item" onclick="onFontDecrease()">🗛</button>
+                    <button class="item" onclick="onFontIncrease()">🗚</button>
+                    <!-- <button class="item" onclick="onSwitchLines()">⇆</button> -->
+                    <button class="item" onclick="onLineAdd()">⩲</button>
+                    <button class="item" onclick="onLineDelete()">🗑</button>
+                    <button class=" item save" onclick="onSaveClick()">💾</button>
+
+                    <button class=" item ctr-btn" onclick="onAlignText('left')"><img
+                            src="./images/icons/align-left.svg"></button>
+                    <button class=" item ctr-btn" onclick="onAlignText('center')"><img
+                            src="./images/icons/align-center.svg"></button>
+                    <button class=" item ctr-btn" onclick="onAlignText('right')"><img
+                            src="./images/icons/align-right.svg"></button>
+
+                </section>
+                <section>
+                    <ul class="clean-list flex">
+                        <li class="emoji" onclick="onAddEmoji(this.value)">🤧</li>
+                        <li class="emoji" onclick="onAddEmoji(this.value)">😵</li>
+                        <li class="emoji" onclick="onAddEmoji(this.value)">🤯</li>
+                        <li class="emoji" onclick="onAddEmoji(this.value)">🤠</li>
+                        <li class="emoji" onclick="onAddEmoji(this.value)">😎</li>
+                        <li class="emoji" onclick="onAddEmoji(this.value)">☠</li>
+                        <li class="emoji" onclick="onAddEmoji(this.value)">💩</li>
+                        <li class="emoji" onclick="onAddEmoji(this.value)">👹</li>
+                    </ul>
+                </section>
+                <!-- <section class="save-options">
                 
             </section> -->
-            <button class="share-btn">share</button>
+                <button class="share-btn">share</button>
+            </section>
         </section>
-    </section>
 
-    <section class="saved-gallery"></section>
+        <section class="saved-gallery"></section>
 
-    <section class="contact-me grid grid-center">
-        <img src="./images/my-photo.png" alt="my round img">
-        <h2>Shilo Klein</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-            Dolorem doloremque corrupti, asperiores id earum voluptate?
-        </p>
-        <section class="social-links flex space-between">
-            <p>logsvg</p>
-            <p>logosvg</p>
-            <p>logosvg</p>
+        <section class="contact-me grid-center">
+            <img src="./images/my-photo.png" alt="my round img">
+            <h2>Shilo Klein</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Dolorem doloremque corrupti, asperiores id earum voluptate?
+            </p>
+            <section class="social-links flex space-between">
+                <p>logsvg</p>
+                <p>logosvg</p>
+                <p>logosvg</p>
+            </section>
         </section>
-    </section>
-</section>
 
-    <footer class="grid grid-center">
-        <p class="logo"><img src="./images/LOGO.png"></p>
-        <p>all rights em emmo</p>
-    </footer>
+
+        <footer class="grid-center">
+            <p class="logo"><img src="./images/LOGO.png"></p>
+            <p>all rights em emmo</p>
+        </footer>
 
     </section>
 

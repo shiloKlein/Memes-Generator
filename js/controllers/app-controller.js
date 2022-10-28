@@ -3,8 +3,8 @@ function onInit() {
     // renderImages()
     initCanvas()
     renderGallery()
+    
 }
-
 
 
 
@@ -34,7 +34,7 @@ function renderSavedmemesGallery() {
         idx = (idx === undefined) ? 0 : idx + 1
         return `<img src="${meme.dataURL}" onclick="onSavedImgSelect(${idx})"></img>`
     }).join('')
-    document.querySelector('.gellery-container').innerHTML = strHTML
+    document.querySelector('.gallery-container').innerHTML = strHTML
 }
 // service
 function getsavedMemes() {
@@ -82,8 +82,6 @@ function toggleMenu() {
     // document.querySelector('.main-layout').classList.toggle('menu-closed')
 
 }
-
-
 
 
 /////////////////////////
