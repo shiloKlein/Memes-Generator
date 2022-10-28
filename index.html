@@ -14,7 +14,7 @@
     <div class="main-screen full" onclick="toggleMenu()"></div>
     <section class="main-layout">
 
-        <header class="full flex space-between">
+        <header class="full flex space-between ">
             <p class="logo"><img src="./images/LOGO.png"></p>
             <ul class="drop-down clean-list flex">
                 <li><button onclick="openGallery()">gallery</button></li>
@@ -42,44 +42,44 @@
 
 
 
-        <section class="meme-editor  grid-center hide">
+        <section class="meme-editor grid-center hide">
 
-            <section class="canvas-container  grid-center grid-item">
+            <section class="canvas-container ">
                 <canvas width="350px" height="350px"></canvas>
             </section>
-            <section class="control-box grid-item">
+            <section class="control-box grid-item flex flex-column">
                 <input type="text" class="meme-text-input" placeholder="write tour line here"
                     oninput="onTextInput(this.value)">
                 <section class="upper-buttons grid-center">
 
 
-                    <label><img src="./images/icons/pencil.svg" alt="stroke color">
+                    <label class="color-btn"><img src="./images/icons/pencil.svg" alt="stroke color">
                         <input class="color-btn fillInput" type="color"
                             oninput="onStrokeColorChange(this.value)"></label>
-                    <label><img src="./images/icons/brush.svg" alt="fill color">
+                    <label class="color-btn"><img src="./images/icons/brush.svg" alt="fill color">
                         <input class="color-btn fillInput" type="color" oninput="onFillColorChange(this.value)"></label>
 
 
-                    <select onchange="onFontChange(this.value)">
-                        <option>Impact</option>
-                        <option>Tahoma</option>
-                        <option>Helvetica</option>
-                    </select>
-
-                    <button class="item" onclick="onFontDecrease()">🗛</button>
-                    <button class="item" onclick="onFontIncrease()">🗚</button>
-                    <!-- <button class="item" onclick="onSwitchLines()">⇆</button> -->
-                    <button class="item" onclick="onLineAdd()">⩲</button>
-                    <button class="item" onclick="onLineDelete()">🗑</button>
-                    <button class=" item save" onclick="onSaveClick()">💾</button>
-
-                    <button class=" item ctr-btn" onclick="onAlignText('left')"><img
+                        
+                        <button class="item" onclick="onFontDecrease()"><img src="./images/icons/arrow_condense.svg" title="condense"></button>
+                        <button class="item" onclick="onFontIncrease()"><img src="./images/icons/arrow_expand.svg " title="expend"></button>
+                        <!-- <button class="item" onclick="onSwitchLines()">⇆</button> -->
+                        <button class="item" onclick="onLineAdd()"><img src="./images/icons/plus.svg " title="delete"></button>
+                        <button class="item" onclick="onLineDelete()"><img src="./images/icons/icon_trash_alt.svg " title="delete"></button>
+                        <button class=" item save" onclick="onSaveClick()"><img src="./images/icons/icon_floppy.svg " title="delete"></button>
+                        
+                        <button class=" item ctr-btn" onclick="onAlignText('left')"><img
                             src="./images/icons/align-left.svg"></button>
-                    <button class=" item ctr-btn" onclick="onAlignText('center')"><img
-                            src="./images/icons/align-center.svg"></button>
-                    <button class=" item ctr-btn" onclick="onAlignText('right')"><img
-                            src="./images/icons/align-right.svg"></button>
-
+                            <button class=" item ctr-btn" onclick="onAlignText('center')"><img
+                                src="./images/icons/align-center.svg"></button>
+                                <button class=" item ctr-btn" onclick="onAlignText('right')"><img
+                                    src="./images/icons/align-right.svg"></button>
+                                    
+                                    <select class="font-selector" onchange="onFontChange(this.value)">
+                                        <option>Impact</option>
+                                        <option>Tahoma</option>
+                                        <option>Helvetica</option>
+                                    </select>
                 </section>
                 <section>
                     <ul class="clean-list flex">

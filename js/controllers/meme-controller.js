@@ -88,8 +88,8 @@ function resizeCanvas() {
     const elContainer = document.querySelector('.canvas-container')
     // Note: changing the canvas dimension this way clears the canvas
     console.log(elContainer);
-    gCanvas.width = elContainer.offsetWidth - 50
-    gCanvas.height = elContainer.offsetWidth - 50
+    gCanvas.width = elContainer.offsetWidth 
+    gCanvas.height = elContainer.offsetWidth 
     renderMeme()
 }
 
