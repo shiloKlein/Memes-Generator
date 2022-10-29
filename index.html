@@ -11,7 +11,7 @@
 </head>
 
 <body onload="onInit()">
-    <div class="main-screen full" onclick="toggleMenu()"></div>
+    <div class="main-screen f`l" onclick="toggleMenu()"></div>
     <section class="main-layout">
 
         <header class="full flex space-between ">
@@ -35,8 +35,11 @@
 
             </section>
             <button onclick="createRandomMeme()">Generate random Meme</button>
-            <!-- <section class="grid grid-center"> -->
-            <input oninput="onTitleSearch()" type="text" placeholder="Enter search keywords 🔍">
+
+            <input list="search-by-keywords" oninput="onKeywordsSearch(this.value)" type="text" placeholder="Enter search keywords 🔍">
+            <datalist id="search-by-keywords"></datalist>
+
+
             <section class="gallery-container grid-center"></section>
         </section>
 

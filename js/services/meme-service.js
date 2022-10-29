@@ -3,10 +3,10 @@
 const SAVED_MEMS_KEY = 'saved-mems'
 var gSavedMemes = []
 var gIsCreating
-
+var gKeywords = ['funny', 'cool', 'pets', 'cat']
 
 var emojis = ['🤧', '😵', '🤯', '🤠', '😎', '☠', '💩', '👹']
-var gKeywordSearchCountMap = { funny: 0, cool: 1, pets: 3, }
+var gKeywordSearchCountMap = { funny: 0, cool: 1, pets: 3, cat: 1, }
 
 
 var gMemes = [
@@ -39,13 +39,13 @@ var gMeme = {
             align: 'center',
             strokeColor: 'black',
             fillColor: 'white',
-            font:'impact',
+            font: 'impact',
             width: 0,
             x: 0,
             y: 0,
             idx: 0,
             isDrag: false,
-            hasMoved:false
+            hasMoved: false
         },
     ]
 }
@@ -54,6 +54,7 @@ function createMeme() {
     const id = gMemes.length + 1
     const meme = { id: i, url: `meme-imgs/${i}.jpg`, keywords: ['funny', 'cat'], }
 }
+
 
 
 function setImg(imgId) {
@@ -79,9 +80,9 @@ function setTextFillColor(color) {
     gMeme.lines[selectedLineIdx].fillColor = color
 }
 
-function setFont(font){
-    gMeme.lines.forEach(line=>
-        line.font=font)
+function setFont(font) {
+    gMeme.lines.forEach(line =>
+        line.font = font)
 }
 
 function setFontSize(size) {
@@ -94,7 +95,7 @@ function setLineIdx(idx) {
     // else gMeme.selectedLineIdx++
 }
 function setDirection(direction) {
-    gMeme.lines[gMeme.selectedLineIdx].align=direction
+    gMeme.lines[gMeme.selectedLineIdx].align = direction
 }
 function checkAlignment() {
     let pos
@@ -102,17 +103,17 @@ function checkAlignment() {
         case 'center':
         case undefined:
             // console.log('lllllllllll');
-            pos = gCanvas.width/2
-            
+            pos = gCanvas.width / 2
+
             // console.log(direction);
             break;
         case 'left':
             pos = 10
             break;
         case 'right':
-            pos = gCanvas.width - gCtx.measureText(gMeme.lines[gMeme.selectedLineIdx].txt).width/2-3 
+            pos = gCanvas.width - gCtx.measureText(gMeme.lines[gMeme.selectedLineIdx].txt).width / 2 - 3
             console.log(pos);
-    
+
             break;
     }
     // console.log(pos);
@@ -126,7 +127,7 @@ function setLinePos(idx, width, height) {
     console.log(alignment);
     idx = gMeme.lines.length - 1
     const line = gMeme.lines[idx]
-    if(!line.hasMoved){
+    if (!line.hasMoved) {
         if (idx === 0) line.y = 70
         else if (idx === 1) line.y = height - 40
         else line.y = height / 2
@@ -151,11 +152,16 @@ function getCurrMeme() {
     return gMeme
 }
 
-function getMemes() {
-    return gMemes
+function getMemes(txt) {
+    let memes = gMemes
+    if (txt) {
+        memes = filterImgs(memes, txt)
+        return memes
+    }
+    return memes
 }
 
-function getfont(){
+function getfont() {
     return gMeme.lines[0].font
 }
 
@@ -179,6 +185,23 @@ function getTextPosition(isCurrLine) {
     return lines
 }
 
+function getKeywords() {
+    return gKeywords
+}
+
+function filterImgs(memes, txt) {
+    const filteredMemes =  memes.filter(meme=>{
+
+          var includedKeywords = meme.keywords.find(keyword=>{
+            return keyword.includes(txt)
+    })
+       return includedKeywords
+    })
+    console.log(filteredMemes);
+    return filteredMemes
+
+}
+
 function setLineText(txt) {
     const lineIdx = gMeme.selectedLineIdx
     gMeme.lines[lineIdx].txt = txt
@@ -193,7 +216,7 @@ function addLine() {
         align: 'center',
         srokeColor: 'black',
         fillColor: 'white',
-        font:getfont(),
+        font: getfont(),
         width: 0,
         x: 0,
         y: 0,
@@ -222,7 +245,7 @@ function setLineDrag(isDrag) {
 function moveText(dx, dy) {
     gMeme.lines[gMeme.selectedLineIdx].x += dx
     gMeme.lines[gMeme.selectedLineIdx].y += dy
-} 
+}
 
 
 

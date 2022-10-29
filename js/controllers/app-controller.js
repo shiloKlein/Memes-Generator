@@ -18,8 +18,8 @@ function onSavedImgSelect(idx) {
     openEditor(imgId)
 }
 
-function renderGallery() {
-    const memes = getMemes()
+function renderGallery(txt) {
+    const memes = getMemes(txt)
     const strHTML = memes.map((meme) => {
         return `<img src="./images/${meme.url}" alt="${meme.id}" onclick="onImgSelect(${meme.id})" class="gallery-img"></img>`
     }).join('')
@@ -63,16 +63,21 @@ function openSavedMemes() {
     renderSavedmemesGallery()
 }
 
+function onKeywordsSearch(txt){
+const datalist = document.querySelector('#search-by-keywords')
+const keywords = getKeywords()
+const strHtml = keywords.map(keyword=>`<option>${keyword}</option>`).join('')
+datalist.innerHTML = strHtml
+// filterImgs(txt)
+renderGallery(txt)
+}
+
 function createRandomMeme() {
 
     const randomMeme = setRandomMeme()
     openEditor()
     renderMeme()
 
-    // const randMeme = randomMeme[rand]
-    // setImg(randMeme.id)
-    // openEditor(randMeme.id)
-    // console.log(randMeme.id);
 }
 
 function toggleMenu() {
