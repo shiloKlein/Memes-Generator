@@ -10,24 +10,24 @@ var gKeywordSearchCountMap = { funny: 0, cool: 1, pets: 3, cat: 1, }
 
 
 var gMemes = [
-    { id: 1, url: 'meme-imgs/1.jpg', keywords: ['funny', 'cat'], },
-    { id: 2, url: 'meme-imgs/2.jpg', keywords: ['funny', 'cat'], },
-    { id: 3, url: 'meme-imgs/3.jpg', keywords: ['funny', 'cat'], },
-    { id: 4, url: 'meme-imgs/4.jpg', keywords: ['funny', 'cat'], },
-    { id: 5, url: 'meme-imgs/5.jpg', keywords: ['funny', 'cat'], },
-    { id: 6, url: 'meme-imgs/6.jpg', keywords: ['funny', 'cat'], },
-    { id: 7, url: 'meme-imgs/7.jpg', keywords: ['funny', 'cat'], },
-    { id: 8, url: 'meme-imgs/8.jpg', keywords: ['funny', 'cat'], },
-    { id: 9, url: 'meme-imgs/9.jpg', keywords: ['funny', 'cat'], },
-    { id: 10, url: 'meme-imgs/10.jpg', keywords: ['funny', 'cat'], },
-    { id: 11, url: 'meme-imgs/11.jpg', keywords: ['funny', 'cat'], },
-    { id: 12, url: 'meme-imgs/12.jpg', keywords: ['funny', 'cat'], },
-    { id: 13, url: 'meme-imgs/13.jpg', keywords: ['funny', 'cat'], },
-    { id: 14, url: 'meme-imgs/14.jpg', keywords: ['funny', 'cat'], },
-    { id: 15, url: 'meme-imgs/15.jpg', keywords: ['funny', 'cat'], },
-    { id: 16, url: 'meme-imgs/16.jpg', keywords: ['funny', 'cat'], },
-    { id: 17, url: 'meme-imgs/17.jpg', keywords: ['funny', 'cat'], },
-    { id: 18, url: 'meme-imgs/18.jpg', keywords: ['funny', 'cat'], },
+    { id: 1, url: 'meme-imgs/1.jpg', keywords: ['funny', 'usa', 'politics'], },
+    { id: 2, url: 'meme-imgs/2.jpg', keywords: ['funny', 'dog'], },
+    { id: 3, url: 'meme-imgs/3.jpg', keywords: ['funny', 'dog', 'baby'], },
+    { id: 4, url: 'meme-imgs/4.jpg', keywords: ['funny', 'cat', 'baby'], },
+    { id: 5, url: 'meme-imgs/5.jpg', keywords: ['funny', ''], },
+    { id: 6, url: 'meme-imgs/6.jpg', keywords: ['funny', ''], },
+    { id: 7, url: 'meme-imgs/7.jpg', keywords: ['funny', 'eyes'], },
+    { id: 8, url: 'meme-imgs/8.jpg', keywords: ['funny', ''], },
+    { id: 9, url: 'meme-imgs/9.jpg', keywords: ['funny', 'baby'], },
+    { id: 10, url: 'meme-imgs/10.jpg', keywords: ['funny', 'usa', 'politics',] },
+    { id: 11, url: 'meme-imgs/11.jpg', keywords: ['funny', 'sport'], },
+    { id: 12, url: 'meme-imgs/12.jpg', keywords: ['funny', 'tv'], },
+    { id: 13, url: 'meme-imgs/13.jpg', keywords: ['funny', 'movie'], },
+    { id: 14, url: 'meme-imgs/14.jpg', keywords: ['funny', 'movie'], },
+    { id: 15, url: 'meme-imgs/15.jpg', keywords: ['funny', 'movie'], },
+    { id: 16, url: 'meme-imgs/16.jpg', keywords: ['funny', 'politics'], },
+    { id: 17, url: 'meme-imgs/17.jpg', keywords: ['funny', ''], },
+    { id: 18, url: 'meme-imgs/18.jpg', keywords: ['funny', 'movie'], },
 ];
 var gMeme = {
     selectedImgId: 1,
@@ -45,7 +45,8 @@ var gMeme = {
             y: 0,
             idx: 0,
             isDrag: false,
-            hasMoved: false
+            hasMoved: false,
+            isEmoji: false
         },
     ]
 }
@@ -102,42 +103,30 @@ function checkAlignment() {
     switch (gMeme.lines[gMeme.selectedLineIdx].align) {
         case 'center':
         case undefined:
-            // console.log('lllllllllll');
             pos = gCanvas.width / 2
 
-            // console.log(direction);
             break;
         case 'left':
             pos = 10
             break;
         case 'right':
             pos = gCanvas.width - gCtx.measureText(gMeme.lines[gMeme.selectedLineIdx].txt).width / 2 - 3
-            console.log(pos);
-
             break;
     }
-    // console.log(pos);
     return pos
 }
 function setLinePos(idx, width, height) {
     const alignment = checkAlignment()
-    console.log(gIsCreating);
     if (gIsCreating === undefined) gIsCreating = true
     if (!gIsCreating) return
-    console.log(alignment);
     idx = gMeme.lines.length - 1
     const line = gMeme.lines[idx]
     if (!line.hasMoved) {
         if (idx === 0) line.y = 70
-        else if (idx === 1) line.y = height - 40
+        else if (idx === 1 && !line.isEmoji) line.y = height - 40
         else line.y = height / 2
     }
-    // console.log(alignment);
     line.x = alignment
-    console.log(gMeme.lines[gMeme.selectedLineIdx]);
-    // console.log(gMeme.lines.length - 1);
-    // console.log(line.x, line.y);
-    // gIsCreating=false
 }
 
 function getMeme(imgId) {
@@ -190,14 +179,13 @@ function getKeywords() {
 }
 
 function filterImgs(memes, txt) {
-    const filteredMemes =  memes.filter(meme=>{
+    const filteredMemes = memes.filter(meme => {
 
-          var includedKeywords = meme.keywords.find(keyword=>{
+        var includedKeywords = meme.keywords.find(keyword => {
             return keyword.includes(txt)
+        })
+        return includedKeywords
     })
-       return includedKeywords
-    })
-    console.log(filteredMemes);
     return filteredMemes
 
 }
@@ -207,11 +195,12 @@ function setLineText(txt) {
     gMeme.lines[lineIdx].txt = txt
 }
 
-function addLine() {
+function addLine(emoji,isEmoji) {
     gMeme.selectedLineIdx++
     gIsCreating = true
+    const txt = emoji? emoji:'place your text here'
     const newMeme = {
-        txt: 'place your text here',
+        txt: txt,
         size: 40,
         align: 'center',
         srokeColor: 'black',
@@ -222,12 +211,12 @@ function addLine() {
         y: 0,
         idx: gMeme.selectedLineIdx,
         isDrag: false,
+        isEmoji:isEmoji,
     }
     gMeme.lines.push(newMeme)
 }
 
 function isTextClicked(clickedPos) {
-    console.log(clickedPos);
     const positions = getTextPosition()
     const clickedText = positions.find(textPos => {
         // Check if the click coordinates are inside the bar coordinates

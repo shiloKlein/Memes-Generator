@@ -59,7 +59,6 @@ function renderText() {
         gCtx.fillStyle = fillColor
         gCtx.textAlign = 'center'
         const isDrag = getDragStatus()
-        console.log(isDrag);
         // font height; 
         if (!isDrag) setLinePos(idx, canvasWidth, canvasHeight)
         gCtx.font = `${size}px ${font}`
@@ -87,7 +86,6 @@ function resizeCanvas() {
 
     const elContainer = document.querySelector('.canvas-container')
     // Note: changing the canvas dimension this way clears the canvas
-    console.log(elContainer);
     gCanvas.width = elContainer.offsetWidth 
     gCanvas.height = elContainer.offsetWidth 
     renderMeme()
@@ -109,7 +107,6 @@ function onStrokeColorChange(color) {
     renderMeme()
 }
 function onFillColorChange(color) {
-    console.log(color);
     setTextFillColor(color)
     renderMeme()
 }
@@ -129,6 +126,10 @@ function onSwitchLines() {
     setLineIdx()
     renderMeme()
 }
+function onAddEmoji(emoji){
+addLine(emoji.innerText, true)
+renderMeme()
+}
 
 function onLineDelete() {
     const meme = getCurrMeme()
@@ -141,7 +142,6 @@ function onLineDelete() {
 
 function onAlignText(direction) {
     setDirection(direction)
-    console.log(gMeme.selectedLineIdx);
     renderMeme()
 }
 
@@ -157,7 +157,6 @@ function onLineAdd() {
 function onSaveClick() {
     const editedMemeImg = gCanvas.toDataURL()
     updateMemeDataUrl(editedMemeImg)
-    console.log(gMeme);
     saveMemeToGallery()
     renderSavedmemesGallery()
 }
@@ -170,8 +169,6 @@ function setTextBorder() {
     let counter = 0
     meme.lines.forEach((line) => { if (line.txt) counter++ })
     if (counter === 0) return
-    // console.log(width, height, x, y, lineIdx);
-    // console.log(x-width/2, y, x+width/2, y-height);
     gCtx.beginPath()
     const { x, y, width, height } = getTextPosition(true)
     gCtx.rect(x, y, width, height);
@@ -193,7 +190,6 @@ function onDown(ev) {
     isLineBorder = true
     setLineIdx(line.idx)
     setLineDrag(true)
-    console.log('asdlk');
     renderMeme()
     //Save the pos we start from 
     gStartPos = pos

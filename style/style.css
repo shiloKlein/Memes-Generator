@@ -12,6 +12,9 @@
 body {
     background-color: lightgray;
 }
+ul{
+    padding:0
+}
 
 img {
     /* width: 100%;
@@ -138,7 +141,10 @@ canvas {
 .logo img {
     width: 200px
 }
-
+.emoji{
+  font-size: x-large;
+  padding: 5px;
+}
 .emoji:hover {
     transform: scale(1.2);
     cursor: pointer;
