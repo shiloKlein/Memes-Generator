@@ -1,6 +1,7 @@
 :root {
     /* pallet */
     --clr1: #ff7f00;
+    --clr2: #ebd7c3;
 }
 
 /* BASICS */
@@ -11,33 +12,52 @@
 
 body {
     background-color: lightgray;
+    margin: 0;
 }
-ul{
-    padding:0
+
+ul , p{
+    padding: 0;
+    margin-bottom:0;
+    
 }
 
 img {
     /* width: 100%;
     height:100%; */
     object-fit: cover;
+    border-radius: 4px;
+}
+
+input {
+    text-align: center;
+    border: 0;
+    border-radius: 2px;
+    border-bottom: solid 1px;
+    background-color: rgb(209, 209, 204);
+    outline: 0px;
 }
 
 header {
     background-color: var(--clr1);
-    width: 100%
+    width: 100%;
+    height: 10vh;
 }
 
 button {
-    border-radius: 20px;
+    border-radius: 8px;
     padding: 10px;
     background-color: rgba(0, 0, 0, 0);
     border: 0
 }
 
+footer{
+    max-height: 10vh;
+}
+
 button:hover,
 .color-btn img:hover {
     transform: scale(1.1);
-    background-color: #f99027;
+    /* background-color: var(--clr2); */
     cursor: pointer;
 }
 
@@ -72,12 +92,15 @@ canvas {
     list-style-type: none;
 }
 
+.img-gallery {
+    gap: 15px;
+}
+
 .gallery-container {
     /* display: grid; */
     grid-template-columns: repeat(2, 1fr);
     gap: 15px;
     place-items: center;
-    background-color: #f99027;
     padding: 10px;
 }
 
@@ -85,6 +108,8 @@ canvas {
     display: grid;
     place-items: center;
     width: 95%;
+    border-radius: 3px;
+    padding-bottom: 15px;
     /* height: 100%; */
 }
 
@@ -133,27 +158,55 @@ canvas {
     width: 100%;
     padding: 20px;
     margin-bottom: 30px;
+    border-radius: 15px;
+    background-color:var(--clr2);
+}
 
+.meme-text-input :active {}
+
+.logo {
+    display: grid;
+    place-items: center;
 }
 
 /* components */
 
 .logo img {
-    width: 200px
+    width: 200px;
+    place-items: center;
 }
-.emoji{
-  font-size: x-large;
-  padding: 5px;
+
+.search-keywords {
+    font-size: 25px;
+    ;
 }
+
+.random-btn {
+    font-size: larger;
+}
+
+.emojies{
+    max-width: 300px;
+    overflow-y:hidden;
+    overflow-x: scroll;
+
+}
+
+.emoji {
+    font-size: 50px;
+    padding: 5px;
+}
+
 .emoji:hover {
     transform: scale(1.2);
     cursor: pointer;
 }
-
-input {
-    border-radius: 20px;
-    padding: 10px;
+.share-btn{
+    font-size: xx-large;
+    background-color: var(--clr2);
+    display: inline;
 }
+
 
 .gallery-container img:hover {
     transform: scale(1.03);
@@ -169,6 +222,7 @@ input {
     transition: 0.3s;
     width: 50px;
     height: 50px;
+    align-self: center;
 }
 
 btn-menu:hover .drop-down {
@@ -253,14 +307,44 @@ btn-menu:hover {
     width: 40px;
     height: 40px;
     font-size: x-large;
+    padding-bottom: 10px;
 }
 
 .main-layout>*:not(.full) {
     margin-left: auto;
     margin-right: auto;
     width: 99%;
-    background-color: #edbd38;
 }
+
+.about-modal {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 90%;
+    transform: translate(-50%, -50%);
+   border-radius: 14px;
+    background-color: #fbb36c;
+    opacity: 0.9;
+    font-size: x-large;
+}
+.about-modal button{
+    font-size: x-large;
+    background-color: rgba(255, 127, 0, 0.4);
+}
+
+.font-selector {
+    font-size: large;
+    grid-column-start: 1;
+    grid-column-end: 4;
+    width: 100%;
+    padding: 5px;
+    border-radius: 10px;
+    background-color: var(--clr2);
+}
+.control-box {
+    align-items: center;
+}
+
 
 
 @media(min-width:550px) {
@@ -288,30 +372,22 @@ btn-menu:hover {
         grid-template-columns: repeat(3, 1fr);
         gap: 15px;
         place-items: center;
-        background-color: #f99027;
         padding: 10px
     }
 
     .canvas-container {
         display: grid;
         place-items: center;
-        width: 95%;
-        /* height: 100%; */
+        max-width: 85%;
+
     }
 
-    .font-selector {
-        font-size: large;
-        grid-column-start: 1;
-        grid-column-end: 4;
-        width: 100%;
-        padding: 5px
+ 
+
+    .font-selector:hover {
+        background-color: #fff;
     }
 
-    .upper-buttons {
-        /* grid-template-columns: repeat(4, 1fr); */
-        grid-template-rows: 1fr;
-        gap: 15px;
-    }
 
     .upper-buttons button,
     .color-btn img {
@@ -322,6 +398,9 @@ btn-menu:hover {
         height: 40px;
         gap: 15px;
         font-size: x-large;
+    }
+    .emoji{
+        font-size: 30px;
     }
 
 
@@ -342,6 +421,7 @@ btn-menu:hover {
 
     .canvas-container {
         max-width: 500px;
+        padding-bottom: px;
     }
 
     .control-box {
@@ -362,6 +442,7 @@ btn-menu:hover {
     .meme-editor {
         grid-template-columns: 6fr 1fr;
         grid-row: 4fr 1fr;
+        height: 80vh;
 
     }
 
@@ -400,6 +481,7 @@ btn-menu:hover {
     .drop-down button:hover {
         color: black;
     }
+
     .contact-me img {
         width: 300px;
     }

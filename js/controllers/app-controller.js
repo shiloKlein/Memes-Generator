@@ -62,9 +62,15 @@ function openSavedMemes() {
     loadSavedMemes()
     renderSavedmemesGallery()
 }
+function openAbout(){
+    document.querySelector('.about-modal').classList.remove('hide')
+}
+function onCloseModal(){
+    document.querySelector('.about-modal').classList.add('hide')
+}
 
 function onKeywordsSearch(txt){
-const datalist = document.querySelector('#search-by-keywords')
+const datalist = document.querySelector('#search-keywords')
 const keywords = getKeywords()
 const strHtml = keywords.map(keyword=>`<option>${keyword}</option>`).join('')
 datalist.innerHTML = strHtml

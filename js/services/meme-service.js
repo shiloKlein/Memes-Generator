@@ -34,7 +34,7 @@ var gMeme = {
     selectedLineIdx: 0,
     lines: [
         {
-            txt: 'place your text here',
+            txt: 'text here',
             size: 40,
             align: 'center',
             strokeColor: 'black',
