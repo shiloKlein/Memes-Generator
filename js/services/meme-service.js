@@ -210,7 +210,7 @@ function setLineText(txt) {
 function addLine(emoji,isEmoji) {
     gMeme.selectedLineIdx++
     gIsCreating = true
-    const txt = emoji? emoji:'place your text here'
+    const txt = emoji? emoji:'text here'
     const newMeme = {
         txt: txt,
         size: 40,
