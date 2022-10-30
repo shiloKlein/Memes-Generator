@@ -12,16 +12,24 @@ function onImgSelect(imgId) {
     setImg(imgId)
     openEditor(imgId)
 }
-function onSavedImgSelect(idx) {
+function onEditSavedMeme(idx) {
     const imgId = setImgFromSaved(idx)
     setcurrMeme(idx)
     openEditor(imgId)
 }
 
+function onDeleteSavedMeme(idx){
+    console.log(gSavedMemes);
+deleteSavedMeme(idx)
+console.log(gSavedMemes);
+renderSavedmemesGallery()
+}
+
 function renderGallery(txt) {
     const memes = getMemes(txt)
     const strHTML = memes.map((meme) => {
-        return `<img src="./images/${meme.url}" alt="${meme.id}" onclick="onImgSelect(${meme.id})" class="gallery-img"></img>`
+        const urlStart = meme.id<=18?`./images/`:""
+        return `<img src="${urlStart}${meme.url}" alt="${meme.id}" onclick="onImgSelect(${meme.id})" class="gallery-img"></img>`
     }).join('')
     document.querySelector('.gallery-container').innerHTML = strHTML
 }
@@ -31,17 +39,24 @@ function renderSavedmemesGallery() {
     let idx
     const savedMemes = getsavedMemes()
     const strHTML = savedMemes.map((meme) => {
-        idx = (idx === undefined) ? 0 : idx + 1
-        return `<img src="${meme.dataURL}" onclick="onSavedImgSelect(${idx})"></img>`
+        idx = (idx === undefined) ? 0 : idx + 1//" onclick="onSavedImgSelect(${idx})"
+        return `<article class="saved-meme-container">
+        <img src="${meme.dataURL}"></img>
+        <section class=" saved-meme-btns flex justify-center">
+        <button onclick="onEditSavedMeme(${idx})"><img src="./images/icons/icon_tools.svg"></button>
+        <button onclick="onDownloadSavedMeme(${this, idx})" download="my-img.jpg"><img src="./images/icons/icon_download.svg"></button>
+        <button onclick="onDeleteSavedMeme(${idx})"><img src="./images/icons/icon_trash_alt.svg"></button>
+        
+
+
+        </section></article>`
     }).join('')
     document.querySelector('.gallery-container').innerHTML = strHTML
 }
-// service
-function getsavedMemes() {
-    const savedMemes = loadFromStorage(SAVED_MEMS_KEY)
-    return savedMemes
-}
-// service
+
+
+
+
 
 function openGallery() {
     document.querySelector('.img-gallery').classList.remove('hide')

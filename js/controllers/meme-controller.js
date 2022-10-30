@@ -36,17 +36,37 @@ function addTouchListeners() {
 function renderMeme(imgId) {
     const meme = getMeme(imgId)
     const img = new Image()
-    img.src = `./images/${meme.url}`
-    var div = document.querySelector('.control-box')
+    img.src = meme.id <= 18 ? `./images/${meme.url}` : meme.url
+    console.log(meme);
+    // var div = document.querySelector('.control-box')
 
     drawImg(img)
     renderText()
     setTextBorder()
 }
+
+function onImgInput(ev) {
+    // const meme = getMeme(imgId)
+    const reader = new FileReader()
+    reader.onload = (event) => {
+
+        const img = new Image()
+        img.src = event.target.result
+        img.onload = () => {
+            const newMemeId = addMeme(img)
+            renderMeme(newMemeId)
+            // renderText()
+            // setTextBorder()
+        }
+    }
+    reader.readAsDataURL(ev.target.files[0])
+    // var div = document.querySelector('.control-box')
+
+}
 function drawImg(img) {
     // Draw the img on the canvas
     gCtx.drawImage(img, 0, 0, gCanvas.width, gCanvas.height)
-    
+
 }
 function renderText() {
     let idx = 0
@@ -74,9 +94,9 @@ function renderText() {
         // containing the text in the canvas
         if (line.x - line.width / 2 < 0) line.x = line.width / 2
         if (line.x + line.width / 2 > gCanvas.width) line.x = gCanvas.width - line.width / 2
-        if (line.y > gCanvas.height-5 ) line.y = gCanvas.height-5
-        if (line.y-size < 0 ) line.y = size+3
-        
+        if (line.y > gCanvas.height - 5) line.y = gCanvas.height - 5
+        if (line.y - size < 0) line.y = size + 3
+
         gCtx.fillText(txt, line.x, line.y) // Draws (fills) a given text at the given (x, y) position.
         gCtx.strokeText(txt, line.x, line.y) // Draws (strokes) a given text at the given (x, y) position.
     })
@@ -86,8 +106,8 @@ function resizeCanvas() {
 
     const elContainer = document.querySelector('.canvas-container')
     // Note: changing the canvas dimension this way clears the canvas
-    gCanvas.width = elContainer.offsetWidth 
-    gCanvas.height = elContainer.offsetWidth 
+    gCanvas.width = elContainer.offsetWidth
+    gCanvas.height = elContainer.offsetWidth
     renderMeme()
 }
 
@@ -99,7 +119,7 @@ function onTextInput(txt) {
     renderMeme()
 }
 
-function openColorPalette(type){
+function openColorPalette(type) {
     document.querySelector(`.${type}`).click()
 }
 function onStrokeColorChange(color) {
@@ -114,7 +134,7 @@ function onFontIncrease() {
     setFontSize(1)
     renderMeme()
 }
-function onFontChange(font){
+function onFontChange(font) {
     setFont(font)
     renderMeme()
 }
@@ -126,9 +146,9 @@ function onSwitchLines() {
     setLineIdx()
     renderMeme()
 }
-function onAddEmoji(emoji){
-addLine(emoji.innerText, true)
-renderMeme()
+function onAddEmoji(emoji) {
+    addLine(emoji.innerText, true)
+    renderMeme()
 }
 
 function onLineDelete() {
@@ -155,13 +175,20 @@ function onLineAdd() {
 }
 
 function onSaveClick() {
-    
-    isLineBorder=false
+    isLineBorder = false
     renderMeme()
     const editedMemeImg = gCanvas.toDataURL()
     updateMemeDataUrl(editedMemeImg)
     saveMemeToGallery()
     renderSavedmemesGallery()
+}
+
+function onDownloadMeme(elLink) {
+
+    const data = gCanvas.toDataURL('image/jpeg')// image/jpeg the default format
+    elLink.href = data
+    console.log(elLink.href);
+    elLink.download = `my-img`
 }
 
 // SPECIFIC SHAPE DRAW FUNCTIONSgMeme
@@ -207,7 +234,7 @@ function onDown(ev) {
 
 function onMove(ev) {
     const meme = getCurrMeme()
-    meme.lines[meme.selectedLineIdx].hasMoved=true
+    meme.lines[meme.selectedLineIdx].hasMoved = true
     const { isDrag } = meme.lines[meme.selectedLineIdx]
     if (!isDrag) return
     const pos = getEvPos(ev)
@@ -258,37 +285,55 @@ function getEvPos(ev) {
 // UPLOADING IMG TO BE ADDED 
 
 
-// function onImgInput(ev) {
-//     loadImageFromInput(ev, renderMeme)
-//     const newImg = addImg(url)
-//     openEditor(addImg.imgId)
-//   }
-  
-//   // CallBack func will run on success load of the img
-
-//   function loadImageFromInput(ev, onImageReady) {
-//     const reader = new FileReader()
-//     // After we read the file
-//     reader.onload = function (event) {
-//       let img = new Image() // Create a new html img element
-//       img.src = event.target.result // Set the img src to the img file we read
-//       // Run the callBack func, To render the img on the canvas
-
-//       img.onload = onImageReady.bind(null, img)
-//       // Can also do it this way:
-//       // img.onload = () => onImageReady(img)
-//     }
-//     reader.readAsDataURL(ev.target.files[0]) // Read the file we picked
-//   }
 
 
-// SERVICE
-// function addImg(url){
-//     const NewId = gMemes[gMemes.length-1].id+1
-//     const NewImg = url
-//     const newImg = { id: NewId, url: url, keywords: ['funny'], }
-//     gMemes.push(newImg) //for now it will not bw saved after reloading the page so it will not be aeditable after saving meme
-//     setImg(newImg.id)
-//     return  newImg
-// }
+function uploadImg() {
+    const imgDataUrl = gCanvas.toDataURL("image/jpeg")// Gets the canvas content as an image format
+
+    // A function to be called if request succeeds
+    function onSuccess(uploadedImgUrl) {
+        // Encode the instance of certain characters in the url
+        const encodedUploadedImgUrl = encodeURIComponent(uploadedImgUrl)
+        console.log(encodedUploadedImgUrl)
+        document.querySelector('.user-msg').innerText = `Your photo is available here: ${uploadedImgUrl}`
+        // Create a link that on click will make a post in facebook with the image we uploaded
+        document.querySelector('.share-container').innerHTML = `
+          <a class="btn" href="https://www.facebook.com/sharer/sharer.php?u=${encodedUploadedImgUrl}&t=${encodedUploadedImgUrl}" title="Share on Facebook" target="_blank" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=${uploadedImgUrl}&t=${uploadedImgUrl}'); return false;">
+             Share   
+          </a>`
+    }
+    // Send the image to the server
+    doUploadImg(imgDataUrl, onSuccess)
+}
+
+function doUploadImg(imgDataUrl, onSuccess) {
+    // Pack the image for delivery
+    const formData = new FormData()
+    formData.append('img', imgDataUrl)
+
+    // Send a post req with the image to the server
+    const XHR = new XMLHttpRequest()
+    XHR.onreadystatechange = () => {
+        // If the request is not done, we have no business here yet, so return
+        if (XHR.readyState !== XMLHttpRequest.DONE) return
+        // if the response is not ok, show an error
+        if (XHR.status !== 200) return console.error('Error uploading image')
+        const { responseText: url } = XHR
+        // Same as:
+        // const url = XHR.responseText
+
+        // If the response is ok, call the onSuccess callback function, 
+        // that will create the link to facebook using the url we got
+        console.log('Got back live url:', url)
+        onSuccess(url)
+    }
+    XHR.onerror = (req, ev) => {
+        console.error('Error connecting to server with request:', req, '\nGot response data:', ev)
+    }
+    XHR.open('POST', '//ca-upload.com/here/upload.php')
+    XHR.send(formData)
+}
+
+
+
 

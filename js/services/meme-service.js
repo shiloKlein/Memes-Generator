@@ -9,7 +9,7 @@ var emojis = ['🤧', '😵', '🤯', '🤠', '😎', '☠', '💩', '👹']
 var gKeywordSearchCountMap = { funny: 0, cool: 1, pets: 3, cat: 1, }
 
 
-var gMemes = [
+var gImgs = [
     { id: 1, url: 'meme-imgs/1.jpg', keywords: ['funny', 'usa', 'politics'], },
     { id: 2, url: 'meme-imgs/2.jpg', keywords: ['funny', 'dog'], },
     { id: 3, url: 'meme-imgs/3.jpg', keywords: ['funny', 'dog', 'baby'], },
@@ -52,7 +52,7 @@ var gMeme = {
 }
 
 function createMeme() {
-    const id = gMemes.length + 1
+    const id = gImgs.length + 1
     const meme = { id: i, url: `meme-imgs/${i}.jpg`, keywords: ['funny', 'cat'], }
 }
 
@@ -131,9 +131,9 @@ function setLinePos(idx, width, height) {
 
 function getMeme(imgId) {
     let img = ''
-    if (!imgId) img = gMemes[gMeme.selectedImgId - 1]
+    if (!imgId) img = gImgs[gMeme.selectedImgId - 1]
     else {
-        img = gMemes.find(img => img.id === imgId)
+        img = gImgs.find(img => img.id === imgId)
     }
     return img
 }
@@ -142,12 +142,16 @@ function getCurrMeme() {
 }
 
 function getMemes(txt) {
-    let memes = gMemes
+    let memes = gImgs
     if (txt) {
         memes = filterImgs(memes, txt)
         return memes
     }
     return memes
+}
+function getsavedMemes() {
+    const savedMemes = loadFromStorage(SAVED_MEMS_KEY)
+    return savedMemes
 }
 
 function getfont() {
@@ -178,6 +182,14 @@ function getKeywords() {
     return gKeywords
 }
 
+function addMeme(img){
+    console.log(img);
+    const newId = gImgs[gImgs.length-1].id+1
+    const meme = {id:newId , url: img.src, keywords: ['funny'], }
+    gImgs.push(meme)
+    gMeme.selectedImgId=newId
+    return newId
+}
 function filterImgs(memes, txt) {
     const filteredMemes = memes.filter(meme => {
 
@@ -271,6 +283,10 @@ const gSampleTexts = [
 
 function loadSavedMemes() {
     gSavedMemes = loadFromStorage(SAVED_MEMS_KEY)
+}
+function deleteSavedMeme(idx){
+    gSavedMemes.splice(idx,1)
+    saveToStorage(SAVED_MEMS_KEY, gSavedMemes)
 }
 
 function updateMemeDataUrl(dataURL) {

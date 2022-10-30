@@ -15,10 +15,11 @@ body {
     margin: 0;
 }
 
-ul , p{
+ul,
+p {
     padding: 0;
-    margin-bottom:0;
-    
+    margin-bottom: 0;
+
 }
 
 img {
@@ -50,7 +51,7 @@ button {
     border: 0
 }
 
-footer{
+footer {
     max-height: 10vh;
 }
 
@@ -78,6 +79,10 @@ canvas {
 
 .flex-column {
     flex-direction: column;
+}
+
+.justify-center {
+    justify-content: center;
 }
 
 .space-between {
@@ -159,7 +164,7 @@ canvas {
     padding: 20px;
     margin-bottom: 30px;
     border-radius: 15px;
-    background-color:var(--clr2);
+    background-color: var(--clr2);
 }
 
 .meme-text-input :active {}
@@ -183,13 +188,18 @@ canvas {
 
 .random-btn {
     font-size: larger;
+    background-color: #ebd7c3;
+    border: solid 1px hsl(0deg 0% 0% / 15%);
 }
 
-.emojies{
-    max-width: 300px;
-    overflow-y:hidden;
-    overflow-x: scroll;
+.emojies-container {
+    padding-bottom: 20px;
+}
 
+.emojies {
+    max-width: 300px;
+    overflow-y: hidden;
+    overflow-x: scroll;
 }
 
 .emoji {
@@ -201,10 +211,12 @@ canvas {
     transform: scale(1.2);
     cursor: pointer;
 }
-.share-btn{
-    font-size: xx-large;
+
+.share-btn {
+    font-size: x-large;
     background-color: var(--clr2);
-    display: inline;
+    background-color: #ebd7c3;
+    border: solid 1px hsl(0deg 0% 0% / 15%);
 }
 
 
@@ -247,12 +259,13 @@ btn-menu:hover {
 }
 
 .drop-down.clicked {
-    transform: translate(0, 100%);
+    transform: translate(0, 108%);
     opacity: 1;
     pointer-events: auto;
 }
 
 .drop-down button {
+    color: rgb(236, 228, 228);
     background-color: rgba(0, 0, 0, 0);
     padding: 10px;
     margin-inline-end: 10px;
@@ -307,7 +320,6 @@ btn-menu:hover {
     width: 40px;
     height: 40px;
     font-size: x-large;
-    padding-bottom: 10px;
 }
 
 .main-layout>*:not(.full) {
@@ -322,29 +334,57 @@ btn-menu:hover {
     top: 50%;
     width: 90%;
     transform: translate(-50%, -50%);
-   border-radius: 14px;
+    border-radius: 14px;
     background-color: #fbb36c;
     opacity: 0.9;
     font-size: x-large;
 }
-.about-modal button{
+
+.about-modal button {
     font-size: x-large;
     background-color: rgba(255, 127, 0, 0.4);
 }
 
 .font-selector {
+    grid-row: 3;
+    grid-column: 2 / 4;
     font-size: large;
-    grid-column-start: 1;
-    grid-column-end: 4;
     width: 100%;
     padding: 5px;
     border-radius: 10px;
     background-color: var(--clr2);
 }
+
+.font-selector:hover {}
+
 .control-box {
     align-items: center;
 }
 
+.saved-meme-container {
+    position: relative;
+}
+
+.saved-meme-btns {
+    position: absolute;
+    top: 70%;
+    right: 50%;
+    transform: translateX(50%);
+}
+
+.saved-meme-btns button {
+    /* background-color: #edbd38; */
+    display: grid;
+    place-items: center;
+}
+
+.saved-meme-btns img {
+    width: 25px;
+}
+
+.saved-meme-btns :hover {
+    box-shadow: 0px 0px 0px 0px !important;
+}
 
 
 @media(min-width:550px) {
@@ -382,7 +422,7 @@ btn-menu:hover {
 
     }
 
- 
+
 
     .font-selector:hover {
         background-color: #fff;
@@ -399,7 +439,8 @@ btn-menu:hover {
         gap: 15px;
         font-size: x-large;
     }
-    .emoji{
+
+    .emoji {
         font-size: 30px;
     }
 
@@ -433,8 +474,9 @@ btn-menu:hover {
 
     .font-selector {
         font-size: large;
-        grid-column-start: 1;
-        grid-column-end: 4;
+        grid-row: 3;
+        grid-column: 2 / 4;
+        /* grid-column-end: 4; */
 
         padding: 5px
     }
@@ -512,8 +554,6 @@ btn-menu:hover {
 
     .font-selector {
         font-size: large;
-        grid-column-start: 1;
-        grid-column-end: 4;
         width: 100%;
         padding: 5px
     }

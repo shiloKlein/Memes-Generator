@@ -53,18 +53,18 @@
                 </section>
 
             </section>
-            <section>
+            <div>
                 <button class="random-btn" onclick="createRandomMeme()">random Meme</button>
-
                 <input list="search-keywords" class="search-keywords" oninput="onKeywordsSearch(this.value)" type="text"
-                    placeholder="search   🔍">
-                <datalist id="search-keywords"></datalist>
+                    placeholder="search"><span>🔍</span>
+            </div>
+            <datalist id="search-keywords"></datalist>
+            <section>
+
+                <section class="gallery-container grid-center"></section>
             </section>
-
-
-
-            <section class="gallery-container grid-center"></section>
         </section>
+
 
 
 
@@ -79,7 +79,8 @@
                 <section class="upper-buttons grid-center">
 
 
-                    <label class="color-btn"><img src="./images/icons/icon_pens_alt.svg" alt="fill color" title="fill color">
+                    <label class="color-btn"><img src="./images/icons/icon_pens_alt.svg" alt="fill color"
+                            title="fill color">
                         <input class="color-btn fillInput" type="color" oninput="onFillColorChange(this.value)"></label>
                     <label class="color-btn"><img src="./images/icons/icon_pens.svg" alt="stroke color"
                             title="stroke color">
@@ -106,8 +107,10 @@
                             src="./images/icons/align-center.svg" title="Align center"></button>
                     <button class=" item ctr-btn" onclick="onAlignText('right')"><img
                             src="./images/icons/align-right.svg" title="Align right"></button>
-
-                    <select class="font-selector" onchange="onFontChange(this.value)" title="select font">
+                    <a href="#" class=" item ctr-btn" onclick="onDownloadMeme(this)" download="my-img.jpg"><img
+                            src="./images/icons/icon_download.svg"></a>
+                            <input type="file" oninput="onImgInput(event)">
+                    <select class="font-selector item ctr-btn" onchange="onFontChange(this.value)" title="select font">
                         <option value="" disabled selected>Select font</option>
                         <option>Impact</option>
                         <option>Tahoma</option>
@@ -115,7 +118,7 @@
                     </select>
                 </section>
 
-                <section>
+                <section class="emojies-container">
                     <ul class="clean-list flex emojies">
                         <li class="emoji" onclick="onAddEmoji(this)">🤧</li>
                         <li class="emoji" onclick="onAddEmoji(this)">😵</li>
@@ -130,7 +133,9 @@
                 <!-- <section class="save-options">
                 
             </section> -->
-                <button class="share-btn">share</button>
+                <p class="user-msg"></p>
+                <div class="share-container"></div>
+                <button class="share-btn" onclick="uploadImg()">share</button>
             </section>
         </section>
 
