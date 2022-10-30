@@ -56,7 +56,7 @@ footer {
 }
 
 button:hover,
-.color-btn img:hover {
+.color-btn img:hover, .input-btn:hover, .input-btn+img:hover {
     transform: scale(1.1);
     /* background-color: var(--clr2); */
     cursor: pointer;
@@ -119,13 +119,16 @@ canvas {
 }
 
 .upper-buttons button,
-.color-btn img {
+.color-btn img, .input-btn {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 40px;
     height: 40px;
     font-size: x-large;
+}
+input.input-btn{
+    display:none
 }
 
 .upper-buttons .item,
@@ -345,17 +348,18 @@ btn-menu:hover {
     background-color: rgba(255, 127, 0, 0.4);
 }
 
-.font-selector {
+select.font-selector {
     grid-row: 3;
-    grid-column: 2 / 4;
+    grid-column: 3 / 5;
     font-size: large;
-    width: 100%;
+    width: 120px !important;
+    height: 30px !important;
     padding: 5px;
     border-radius: 10px;
     background-color: var(--clr2);
 }
 
-.font-selector:hover {}
+
 
 .control-box {
     align-items: center;
@@ -372,18 +376,20 @@ btn-menu:hover {
     transform: translateX(50%);
 }
 
-.saved-meme-btns button {
+.saved-meme-btns button ,.saved-meme-btns a{
     /* background-color: #edbd38; */
     display: grid;
     place-items: center;
 }
 
-.saved-meme-btns img {
+.saved-meme-btns img, .saved-meme-btns a{
     width: 25px;
 }
 
-.saved-meme-btns :hover {
+.saved-meme-btns :hover, .saved-meme-btns a:hover {
     box-shadow: 0px 0px 0px 0px !important;
+    cursor: pointer;
+    transform: scale(1.1);
 }
 
 
@@ -424,7 +430,7 @@ btn-menu:hover {
 
 
 
-    .font-selector:hover {
+    select.font-selector:hover {
         background-color: #fff;
     }
 
@@ -472,10 +478,10 @@ btn-menu:hover {
         gap: 25px
     }
 
-    .font-selector {
+    select.font-selector {
         font-size: large;
         grid-row: 3;
-        grid-column: 2 / 4;
+        grid-column: 3 / 5;
         /* grid-column-end: 4; */
 
         padding: 5px
@@ -520,6 +526,9 @@ btn-menu:hover {
         opacity: 1
     }
 
+    .drop-down button {
+        color: black;
+    }
     .drop-down button:hover {
         color: black;
     }
@@ -552,9 +561,8 @@ btn-menu:hover {
         gap: 25px
     }
 
-    .font-selector {
+    select.font-selector {
         font-size: large;
-        width: 100%;
         padding: 5px
     }
 

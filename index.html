@@ -107,9 +107,12 @@
                             src="./images/icons/align-center.svg" title="Align center"></button>
                     <button class=" item ctr-btn" onclick="onAlignText('right')"><img
                             src="./images/icons/align-right.svg" title="Align right"></button>
-                    <a href="#" class=" item ctr-btn" onclick="onDownloadMeme(this)" download="my-img.jpg"><img
+                    <a href="#" class=" item ctr-btn input-btn" onclick="onDownloadMeme(this)" download="my-img.jpg"><img
                             src="./images/icons/icon_download.svg"></a>
-                            <input type="file" oninput="onImgInput(event)">
+                            <label for="input-img">
+                            <input type="file" id="input-img" class="input-btn"  oninput="onImgInput(event)" hidden>
+                            <img src="./images/icons/icon_upload.svg"" alt="">
+                        </label>
                     <select class="font-selector item ctr-btn" onchange="onFontChange(this.value)" title="select font">
                         <option value="" disabled selected>Select font</option>
                         <option>Impact</option>
@@ -133,7 +136,6 @@
                 <!-- <section class="save-options">
                 
             </section> -->
-                <p class="user-msg"></p>
                 <div class="share-container"></div>
                 <button class="share-btn" onclick="uploadImg()">share</button>
             </section>

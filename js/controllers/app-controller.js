@@ -9,6 +9,7 @@ function onInit() {
 
 
 function onImgSelect(imgId) {
+    
     setImg(imgId)
     openEditor(imgId)
 }
@@ -44,7 +45,7 @@ function renderSavedmemesGallery() {
         <img src="${meme.dataURL}"></img>
         <section class=" saved-meme-btns flex justify-center">
         <button onclick="onEditSavedMeme(${idx})"><img src="./images/icons/icon_tools.svg"></button>
-        <button onclick="onDownloadSavedMeme(${this, idx})" download="my-img.jpg"><img src="./images/icons/icon_download.svg"></button>
+        <a onclick="onDownloadSavedMeme(this, ${idx})" download="my-img.jpg"><img src="./images/icons/icon_download.svg"></a>
         <button onclick="onDeleteSavedMeme(${idx})"><img src="./images/icons/icon_trash_alt.svg"></button>
         
 
