@@ -33,9 +33,9 @@
 
         <header class="full main-layout flex">
             <div class="flex space-between">
-                <p class="logo"><img src="./images/LOGO.png"></p>
+                <p class="logo" onclick="openGallery()" ><img src="./images/LOGO.png"></p>
                 <ul class="drop-down clean-list flex">
-                    <li><button onclick="openGallery()">gallery</button></li>
+                    <li><button onclick="openGallery()">Gallery</button></li>
                     <li><button onclick="openEditor()">Editor</button></li>
                     <li><button onclick="openSavedMemes()">Memes</button></li>
                     <li><button onclick="openAbout()">About</button></li>
@@ -108,10 +108,10 @@
                     <button class=" item ctr-btn" onclick="onAlignText('right')"><img
                             src="./images/icons/align-right.svg" title="Align right"></button>
                     <a href="#" class=" item ctr-btn input-btn" onclick="onDownloadMeme(this)" download="my-img.jpg"><img
-                            src="./images/icons/icon_download.svg"></a>
+                            src="./images/icons/icon_download.svg" title="Download"></a>
                             <label for="input-img">
                             <input type="file" id="input-img" class="input-btn"  oninput="onImgInput(event)" hidden>
-                            <img src="./images/icons/icon_upload.svg"" alt="">
+                            <img src="./images/icons/icon_upload.svg" alt="Upload" title="Upload">
                         </label>
                     <select class="font-selector item ctr-btn" onchange="onFontChange(this.value)" title="select font">
                         <option value="" disabled selected>Select font</option>
@@ -147,7 +147,7 @@
 
 
         <footer class="grid-center">
-            <p class="logo"><img src="./images/LOGO.png"></p>
+            <p class="logo" onclick="openGallery()"><img src="./images/LOGO.png"></p>
             <p>all rights em emmo</p>
         </footer>
 

@@ -183,6 +183,9 @@ input.input-btn{
     width: 200px;
     place-items: center;
 }
+.logo:hover{
+    cursor: pointer;
+}
 
 .search-keywords {
     font-size: 25px;
@@ -380,6 +383,7 @@ select.font-selector {
     /* background-color: #edbd38; */
     display: grid;
     place-items: center;
+    /* background-color: rgba(255, 255, 255, 0.2); */
 }
 
 .saved-meme-btns img, .saved-meme-btns a{

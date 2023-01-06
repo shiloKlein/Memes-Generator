@@ -14,7 +14,7 @@ function initCanvas() {
     initEventListeners()
     resizeCanvas()
 }
-// EVENT LISTENERS////////////
+// EVENT LISTENERS
 function initEventListeners() {
     window.addEventListener('resize', resizeCanvas)
     addMouseListeners()

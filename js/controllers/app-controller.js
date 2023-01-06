@@ -48,8 +48,6 @@ function renderSavedmemesGallery() {
         <a onclick="onDownloadSavedMeme(this, ${idx})" download="my-img.jpg"><img src="./images/icons/icon_download.svg"></a>
         <button onclick="onDeleteSavedMeme(${idx})"><img src="./images/icons/icon_trash_alt.svg"></button>
         
-
-
         </section></article>`
     }).join('')
     document.querySelector('.gallery-container').innerHTML = strHTML

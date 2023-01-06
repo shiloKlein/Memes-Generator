@@ -3,7 +3,7 @@
 const SAVED_MEMS_KEY = 'saved-mems'
 var gSavedMemes = []
 var gIsCreating
-var gKeywords = ['funny', 'cool', 'pets', 'cat']
+var gKeywords = ['funny', 'cool', 'pets', 'cat', 'dog']
 
 var emojis = ['🤧', '😵', '🤯', '🤠', '😎', '☠', '💩', '👹']
 var gKeywordSearchCountMap = { funny: 0, cool: 1, pets: 3, cat: 1, }
@@ -11,13 +11,13 @@ var gKeywordSearchCountMap = { funny: 0, cool: 1, pets: 3, cat: 1, }
 
 var gImgs = [
     { id: 1, url: 'meme-imgs/1.jpg', keywords: ['funny', 'usa', 'politics'], },
-    { id: 2, url: 'meme-imgs/2.jpg', keywords: ['funny', 'dog'], },
+    { id: 2, url: 'meme-imgs/2.jpg', keywords: ['funny', 'dog' ,'pets'], },
     { id: 3, url: 'meme-imgs/3.jpg', keywords: ['funny', 'dog', 'baby'], },
-    { id: 4, url: 'meme-imgs/4.jpg', keywords: ['funny', 'cat', 'baby'], },
-    { id: 5, url: 'meme-imgs/5.jpg', keywords: ['funny', ''], },
-    { id: 6, url: 'meme-imgs/6.jpg', keywords: ['funny', ''], },
+    { id: 4, url: 'meme-imgs/4.jpg', keywords: ['funny', 'cat', 'baby','pets'], },
+    { id: 5, url: 'meme-imgs/5.jpg', keywords: ['funny', 'cool'], },
+    { id: 6, url: 'meme-imgs/6.jpg', keywords: ['funny', 'cool'], },
     { id: 7, url: 'meme-imgs/7.jpg', keywords: ['funny', 'eyes'], },
-    { id: 8, url: 'meme-imgs/8.jpg', keywords: ['funny', ''], },
+    { id: 8, url: 'meme-imgs/8.jpg', keywords: ['funny', 'cool'], },
     { id: 9, url: 'meme-imgs/9.jpg', keywords: ['funny', 'baby'], },
     { id: 10, url: 'meme-imgs/10.jpg', keywords: ['funny', 'usa', 'politics',] },
     { id: 11, url: 'meme-imgs/11.jpg', keywords: ['funny', 'sport'], },
@@ -26,7 +26,7 @@ var gImgs = [
     { id: 14, url: 'meme-imgs/14.jpg', keywords: ['funny', 'movie'], },
     { id: 15, url: 'meme-imgs/15.jpg', keywords: ['funny', 'movie'], },
     { id: 16, url: 'meme-imgs/16.jpg', keywords: ['funny', 'politics'], },
-    { id: 17, url: 'meme-imgs/17.jpg', keywords: ['funny', ''], },
+    { id: 17, url: 'meme-imgs/17.jpg', keywords: ['funny', 'cool'], },
     { id: 18, url: 'meme-imgs/18.jpg', keywords: ['funny', 'movie'], },
 ];
 var gMeme = {
@@ -150,7 +150,7 @@ function getMemes(txt) {
     return memes
 }
 function getsavedMemes() {
-    const savedMemes = loadFromStorage(SAVED_MEMS_KEY)
+    const savedMemes = loadFromStorage(SAVED_MEMS_KEY)||[]
     return savedMemes
 }
 
