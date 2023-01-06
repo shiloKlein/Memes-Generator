@@ -294,7 +294,7 @@ function updateMemeDataUrl(dataURL) {
 }
 
 function saveMemeToGallery() {
-    if (loadFromStorage(SAVED_MEMS_KEY)) gSavedMemes = loadFromStorage(SAVED_MEMS_KEY)||[]
+    gSavedMemes = loadFromStorage(SAVED_MEMS_KEY)||[]
 
     const savedMeme = JSON.parse(JSON.stringify(gMeme))
     gSavedMemes.push(savedMeme)
