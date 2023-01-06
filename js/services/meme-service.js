@@ -183,7 +183,7 @@ function getKeywords() {
 }
 
 function addMeme(img){
-    console.log(img);
+    // console.log(img);
     const newId = gImgs[gImgs.length-1].id+1
     const meme = {id:newId , url: img.src, keywords: ['funny'], }
     gImgs.push(meme)

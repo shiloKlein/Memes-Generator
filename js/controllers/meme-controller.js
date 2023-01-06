@@ -37,7 +37,7 @@ function renderMeme(imgId) {
     const meme = getMeme(imgId)
     const img = new Image()
     img.src = meme.id <= 18 ? `./images/${meme.url}` : meme.url
-    console.log(meme);
+    // console.log(meme);
     // var div = document.querySelector('.control-box')
 
     drawImg(img)
@@ -187,23 +187,23 @@ function onDownloadMeme(elLink) {
 
     const data = gCanvas.toDataURL('image/jpeg')// image/jpeg the default format
     elLink.href = data
-    console.log(elLink.href);
+    // console.log(elLink.href);
     elLink.download = `my-img`
 }
 
 function onDownloadSavedMeme(elLink, idx){
     const data = getSavedImg(idx)
-    console.log(data);
+    // console.log(data);
     // data = gCanvas.toDataURL('image/jpeg')// image/jpeg the default format
-    console.log(elLink);
+    // console.log(elLink);
     elLink.href = data
-    console.log(elLink.href);
+    // console.log(elLink.href);
     elLink.download = `my-img`
 }
 
 
 function getSavedImg(idx){
-    console.log(gSavedMemes);
+    // console.log(gSavedMemes);
     return gSavedMemes[idx].dataURL
 }
 
@@ -310,7 +310,7 @@ function uploadImg() {
     function onSuccess(uploadedImgUrl) {
         // Encode the instance of certain characters in the url
         const encodedUploadedImgUrl = encodeURIComponent(uploadedImgUrl)
-        console.log(encodedUploadedImgUrl)
+        // console.log(encodedUploadedImgUrl)
         // Create a link that on click will make a post in facebook with the image we uploaded
         document.querySelector('.share-container').innerHTML = `
           <a class="btn" href="https://www.facebook.com/sharer/sharer.php?u=${encodedUploadedImgUrl}&t=${encodedUploadedImgUrl}" title="Share on Facebook" target="_blank" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=${uploadedImgUrl}&t=${uploadedImgUrl}'); return false;">

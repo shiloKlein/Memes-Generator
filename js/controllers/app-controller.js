@@ -20,9 +20,9 @@ function onEditSavedMeme(idx) {
 }
 
 function onDeleteSavedMeme(idx){
-    console.log(gSavedMemes);
+    // console.log(gSavedMemes);
 deleteSavedMeme(idx)
-console.log(gSavedMemes);
+// console.log(gSavedMemes);
 renderSavedmemesGallery()
 }
 
